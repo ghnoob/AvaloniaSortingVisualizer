@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaSortingVisualizer.Views.MainView">
+  <Grid Background="Black" RowDefinitions="* Auto">
+    <UniformGrid Rows="1" Grid.Row="0">
+      <Grid RowDefinitions="4* 1*">
+        <Rectangle Grid.Row="1" Fill="White"/>
+      </Grid>
+      <Grid RowDefinitions="3* 2*">
+        <Rectangle Grid.Row="1" Fill="White"/>
+      </Grid>
+      <Grid RowDefinitions="2* 3*">
+        <Rectangle Grid.Row="1" Fill="White"/>
+      </Grid>
+      <Grid RowDefinitions="1* 4*">
+        <Rectangle Grid.Row="1" Fill="White"/>
+      </Grid>
+      <Grid RowDefinitions="0* 5*">
+        <Rectangle Grid.Row="1" Fill="White"/>
+      </Grid>
+    </UniformGrid>
+
+    <StackPanel Orientation="Horizontal" Background="LightGray" Grid.Row="1">
+      <ComboBox SelectedIndex="0">
+        <ComboBoxItem>Bubble Sort</ComboBoxItem>
+        <ComboBoxItem>Cocktail Sort</ComboBoxItem>
+      </ComboBox>
+      <Button>Sort</Button>
+      <Button>Shuffle</Button>
+      <Button IsEnabled="false">Stop</Button>
+    </StackPanel>
+  </Grid>
+</UserControl>

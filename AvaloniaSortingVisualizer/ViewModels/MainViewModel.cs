@@ -12,6 +12,6 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel(ISortableElementService service)
     {
-        Items = service.GetItems();
+        Items = new ObservableCollection<SortableElementModel>(service.GetItems());
     }
 }

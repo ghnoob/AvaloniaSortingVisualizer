@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using AvaloniaSortingVisualizer.Models;
 
 namespace AvaloniaSortingVisualizer.Services
@@ -12,6 +12,6 @@ namespace AvaloniaSortingVisualizer.Services
         /// Gets the collection of sortable elements.
         /// </summary>
         /// <returns>The collection of sortable elements.</returns>
-        ObservableCollection<SortableElementModel> GetItems();
+        IEnumerable<SortableElementModel> GetItems();
     }
 }

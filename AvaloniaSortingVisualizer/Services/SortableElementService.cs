@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using AvaloniaSortingVisualizer.Models;
 
@@ -10,7 +9,7 @@ namespace AvaloniaSortingVisualizer.Services
     /// </summary>
     public class SortableElementService : ISortableElementService
     {
-        private ObservableCollection<SortableElementModel> _items;
+        private IEnumerable<SortableElementModel> _items;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SortableElementService"/> class.
@@ -20,7 +19,7 @@ namespace AvaloniaSortingVisualizer.Services
             _items = GenerateItems();
         }
 
-        public ObservableCollection<SortableElementModel> GetItems()
+        public IEnumerable<SortableElementModel> GetItems()
         {
             return _items;
         }
@@ -29,14 +28,10 @@ namespace AvaloniaSortingVisualizer.Services
         /// Generates the collection of sortable elements.
         /// </summary>
         /// <returns>The collection of sortable elements.</returns>
-        private ObservableCollection<SortableElementModel> GenerateItems()
+        private IEnumerable<SortableElementModel> GenerateItems()
         {
             // TODO: dynamic length
-            IEnumerable<SortableElementModel> items = Enumerable
-                .Range(1, 128)
-                .Select(i => new SortableElementModel { Value = i });
-
-            return new ObservableCollection<SortableElementModel>(items);
+            return Enumerable.Range(1, 128).Select(i => new SortableElementModel { Value = i });
         }
     }
 }

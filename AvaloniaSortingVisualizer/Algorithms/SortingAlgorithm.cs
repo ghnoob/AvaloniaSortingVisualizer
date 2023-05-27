@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
 using AvaloniaSortingVisualizer.ViewModels;
@@ -11,6 +12,8 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public abstract class SortingAlgorithm : IComparer<SortableElementViewModel>
     {
+        protected virtual bool IsShuffle => false;
+
         private const int MaxDelay = 2048;
 
         /// <summary>
@@ -110,7 +113,13 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// Sorts all elements in the list.
         /// </summary>
         /// <returns>A task representing the sort operation.</returns>
-        public Task Sort() => SortRange(0, Items.Count);
+        public async Task Sort()
+        {
+            await SortRange(0, Items.Count);
+            ClearAllStatuses();
+            if (!IsShuffle)
+                await FinalSweep();
+        }
 
         public int Compare(SortableElementViewModel? x, SortableElementViewModel? y)
         {
@@ -120,6 +129,34 @@ namespace AvaloniaSortingVisualizer.Algorithms
                 return 1;
 
             return x.Value.CompareTo(y.Value);
+        }
+
+        /// <summary>
+        /// Performs a final sweep to visually mark all elements as sorted.
+        /// </summary>
+        /// <returns>A task representing the final sweep operation.</returns>
+        private async Task FinalSweep()
+        {
+            foreach (SortableElementViewModel vm in Items)
+            {
+                vm.Status = SortableElementStatus.Sorted;
+                await UpdateBox();
+            }
+
+            ClearAllStatuses();
+        }
+
+        /// <summary>
+        /// Clears the status of all elements in the collection.
+        /// </summary>
+        private void ClearAllStatuses()
+        {
+            foreach (
+                SortableElementViewModel vm in Items.Where(
+                    item => item.Status != SortableElementStatus.Normal
+                )
+            )
+                vm.Status = SortableElementStatus.Normal;
         }
 
         public abstract override string ToString();

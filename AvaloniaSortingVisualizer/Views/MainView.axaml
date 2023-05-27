@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:AvaloniaSortingVisualizer.ViewModels"
+             xmlns:algorithm="using:AvaloniaSortingVisualizer.Algorithms"
              xmlns:converter="using:AvaloniaSortingVisualizer.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaSortingVisualizer.Views.MainView"
@@ -44,11 +45,14 @@
     </ItemsControl>
 
     <StackPanel Orientation="Horizontal" Background="LightGray" Grid.Row="1">
-      <ComboBox SelectedIndex="0">
-        <ComboBoxItem>Bubble Sort</ComboBoxItem>
-        <ComboBoxItem>Cocktail Sort</ComboBoxItem>
+      <ComboBox Items="{Binding Algorithms}" SelectedItem="{Binding SelectedAlgorithm}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="algorithm:SortingAlgorithm">
+            <TextBlock Text="{Binding Name}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
       </ComboBox>
-      <Button>Sort</Button>
+      <Button Command="{Binding RunSortCommand}">Sort</Button>
       <Button>Shuffle</Button>
       <Button IsEnabled="False">Stop</Button>
     </StackPanel>

@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using AvaloniaSortingVisualizer.Services;
+using Splat;
 using AvaloniaSortingVisualizer.ViewModels;
 
 namespace AvaloniaSortingVisualizer.Views;
@@ -10,10 +10,6 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
 
-        // TODO: dependency injection
-        ISortableElementService service = new SortableElementService();
-        MainViewModel vm = new MainViewModel(service);
-
-        DataContext = vm;
+        DataContext = Locator.Current.GetService<MainViewModel>();
     }
 }

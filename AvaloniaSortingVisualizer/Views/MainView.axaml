@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:AvaloniaSortingVisualizer.ViewModels"
              xmlns:converter="using:AvaloniaSortingVisualizer.Converters"
-             xmlns:model="using:AvaloniaSortingVisualizer.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaSortingVisualizer.Views.MainView"
              x:DataType="vm:MainViewModel"
@@ -24,7 +23,7 @@
       </ItemsControl.ItemsPanel>
 
       <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="model:SortableElementModel">
+        <DataTemplate DataType="vm:SortableElementViewModel">
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition>

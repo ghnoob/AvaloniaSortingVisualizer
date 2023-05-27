@@ -2,34 +2,32 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
+using AvaloniaSortingVisualizer.ViewModels;
 
 namespace AvaloniaSortingVisualizer.Algorithms
 {
     /// <summary>
     /// Base class for sorting algorithms.
     /// </summary>
-    public abstract class SortingAlgorithm : IComparer<SortableElementModel>
+    public abstract class SortingAlgorithm : IComparer<SortableElementViewModel>
     {
         private const int MaxDelay = 2048;
 
         /// <summary>
         /// Gets the name of the algorithm.
         /// </summary>
-        public string Name
-        {
-            get => ToString();
-        }
+        public string Name => ToString();
 
         /// <summary>
         /// Gets the list of items to be sorted.
         /// </summary>
-        public ObservableCollection<SortableElementModel> Items { get; }
+        public ObservableCollection<SortableElementViewModel> Items { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SortingAlgorithm"/> class.
         /// </summary>
         /// <param name="items">The list of items to be sorted.</param>
-        public SortingAlgorithm(ObservableCollection<SortableElementModel> items)
+        public SortingAlgorithm(ObservableCollection<SortableElementViewModel> items)
         {
             Items = items;
         }
@@ -38,10 +36,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// Delays the execution of the sorting algorithm to visualize the changes.
         /// </summary>
         /// <returns>A task representing the delay.</returns>
-        protected Task UpdateBox()
-        {
-            return Task.Delay(MaxDelay / Items.Count);
-        }
+        protected Task UpdateBox() => Task.Delay(MaxDelay / Items.Count);
 
         /// <summary>
         /// Updates the state of an element at the specified index and delays the execution.
@@ -50,12 +45,12 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int index)
         {
-            SortableElementModel model = Items[index];
-            SortableElementStatus tmpStatus = model.Status;
+            SortableElementViewModel vm = Items[index];
+            SortableElementStatus tmpStatus = vm.Status;
 
-            model.Status = SortableElementStatus.Tracked;
+            vm.Status = SortableElementStatus.Tracked;
             await UpdateBox();
-            model.Status = tmpStatus;
+            vm.Status = tmpStatus;
         }
 
         /// <summary>
@@ -66,12 +61,12 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB)
         {
-            SortableElementModel model = Items[indexB];
-            SortableElementStatus tmpStatus = model.Status;
+            SortableElementViewModel vm = Items[indexB];
+            SortableElementStatus tmpStatus = vm.Status;
 
-            model.Status = SortableElementStatus.Tracked;
+            vm.Status = SortableElementStatus.Tracked;
             await UpdateBox(indexA);
-            model.Status = tmpStatus;
+            vm.Status = tmpStatus;
         }
 
         /// <summary>
@@ -83,12 +78,12 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB, int indexC)
         {
-            SortableElementModel model = Items[indexC];
-            SortableElementStatus tmpStatus = model.Status;
+            SortableElementViewModel vm = Items[indexC];
+            SortableElementStatus tmpStatus = vm.Status;
 
-            model.Status = SortableElementStatus.Tracked;
+            vm.Status = SortableElementStatus.Tracked;
             await UpdateBox(indexA, indexB);
-            model.Status = tmpStatus;
+            vm.Status = tmpStatus;
         }
 
         /// <summary>
@@ -117,7 +112,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the sort operation.</returns>
         public Task Sort() => SortRange(0, Items.Count);
 
-        public int Compare(SortableElementModel? x, SortableElementModel? y)
+        public int Compare(SortableElementViewModel? x, SortableElementViewModel? y)
         {
             if (x == null)
                 return y == null ? 0 : -1;

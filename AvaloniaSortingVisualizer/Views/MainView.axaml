@@ -53,7 +53,7 @@
         </ComboBox.ItemTemplate>
       </ComboBox>
       <Button Command="{Binding RunSortCommand}">Sort</Button>
-      <Button>Shuffle</Button>
+      <Button Command="{Binding RunShuffleCommand}">Shuffle</Button>
       <Button IsEnabled="False">Stop</Button>
     </StackPanel>
   </Grid>

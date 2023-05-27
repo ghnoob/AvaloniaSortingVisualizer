@@ -49,6 +49,8 @@ public partial class App : Application
         // Algorithms
         services.AddTransient<SortingAlgorithm, BubbleSort>();
 
+        services.AddTransient<Shuffle, FisherYatesShuffle>();
+
         // ViewModels
         services.AddTransient<MainViewModel>();
     }

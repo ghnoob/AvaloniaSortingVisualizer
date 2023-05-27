@@ -25,6 +25,11 @@ namespace AvaloniaSortingVisualizer.ViewModels
         private SortingAlgorithm _selectedAlgorithm;
 
         /// <summary>
+        /// Gets the shuffle algorithm
+        /// </summary>
+        private Shuffle Shuffler { get; }
+
+        /// <summary>
         /// Gets the ordered enumerable of sorting algorithms.
         /// </summary>
         public IOrderedEnumerable<SortingAlgorithm> SortingAlgorithms { get; }
@@ -36,7 +41,8 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// <param name="algorithms">The collection of sorting algorithms.</param>
         public MainViewModel(
             ISortableElementService service,
-            IEnumerable<SortingAlgorithm> algorithms
+            IEnumerable<SortingAlgorithm> algorithms,
+            Shuffle shuffler
         )
         {
             // Wrap the sortable element models in view models
@@ -52,6 +58,20 @@ namespace AvaloniaSortingVisualizer.ViewModels
 
             // Set the selected algorithm to the first one in the ordered list
             SelectedAlgorithm = SortingAlgorithms.First();
+
+            // Configure the shuffler
+            Shuffler = ConfigureShuffler(shuffler);
+        }
+
+        /// <summary>
+        /// Configures the suffler
+        /// </summary>
+        /// <param name="shuffler">The shuffler to configure</param>
+        /// <returns>The configured shuffler</returns>
+        private Shuffle ConfigureShuffler(Shuffle shuffler)
+        {
+            shuffler.SetItems(Items);
+            return shuffler;
         }
 
         /// <summary>
@@ -79,5 +99,12 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// <returns>A task representing the asynchronous operation.</returns>
         [RelayCommand]
         private Task RunSortAsync() => SelectedAlgorithm.Run();
+
+        /// <summary>
+        /// Runs the shuffle algorithm asynchronously.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        [RelayCommand]
+        private Task RunShuffleAsync() => Shuffler.Run();
     }
 }

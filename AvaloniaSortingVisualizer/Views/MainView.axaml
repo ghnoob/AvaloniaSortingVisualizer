@@ -52,9 +52,13 @@
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
-      <Button Command="{Binding RunSortCommand}">Sort</Button>
-      <Button Command="{Binding RunShuffleCommand}">Shuffle</Button>
-      <Button IsEnabled="False">Stop</Button>
+      <Button Command="{Binding RunSortCommand}" IsEnabled="{Binding !IsRunning}">
+        Sort
+      </Button>
+      <Button Command="{Binding RunShuffleCommand}" IsEnabled="{Binding !IsRunning}">
+        Shuffle
+      </Button>
+      <Button IsEnabled="{Binding IsRunning}">Stop</Button>
     </StackPanel>
   </Grid>
 </UserControl>

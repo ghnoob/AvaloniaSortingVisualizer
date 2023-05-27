@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,6 +22,12 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// </summary>
         [ObservableProperty]
         private SortingAlgorithm _selectedAlgorithm;
+
+        /// <summary>
+        /// Indicates if an algorithm is running
+        /// </summary>
+        [ObservableProperty]
+        private bool _isRunning;
 
         /// <summary>
         /// Gets the shuffle algorithm
@@ -61,6 +66,8 @@ namespace AvaloniaSortingVisualizer.ViewModels
 
             // Configure the shuffler
             Shuffler = ConfigureShuffler(shuffler);
+
+            IsRunning = false;
         }
 
         /// <summary>
@@ -94,17 +101,29 @@ namespace AvaloniaSortingVisualizer.ViewModels
         }
 
         /// <summary>
+        /// Runs an algorithm asynchronously.
+        /// </summary>
+        /// <param name="algorithm">The algorithm to run</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        private async Task RunAlgorithmAsync(Algorithm algorithm)
+        {
+            IsRunning = true;
+            await algorithm.Run();
+            IsRunning = false;
+        }
+
+        /// <summary>
         /// Runs the selected sorting algorithm asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous operation.</returns>
         [RelayCommand]
-        private Task RunSortAsync() => SelectedAlgorithm.Run();
+        private Task RunSortAsync() => RunAlgorithmAsync(SelectedAlgorithm);
 
         /// <summary>
         /// Runs the shuffle algorithm asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous operation.</returns>
         [RelayCommand]
-        private Task RunShuffleAsync() => Shuffler.Run();
+        private Task RunShuffleAsync() => RunAlgorithmAsync(Shuffler);
     }
 }

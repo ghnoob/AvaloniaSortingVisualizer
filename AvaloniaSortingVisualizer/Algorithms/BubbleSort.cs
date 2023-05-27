@@ -17,7 +17,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
         public BubbleSort(ObservableCollection<SortableElementViewModel> items)
             : base(items) { }
 
-        public override async Task SortRange(int start, int end)
+        public override async Task RunRange(int start, int end)
         {
             bool sorted;
             int i = start;

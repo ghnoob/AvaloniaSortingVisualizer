@@ -34,5 +34,5 @@ public partial class MainViewModel : ViewModelBase
         new SortingAlgorithm[1] { new BubbleSort(Items) };
 
     [RelayCommand]
-    private Task RunSortAsync() => SelectedAlgorithm.Sort();
+    private Task RunSortAsync() => SelectedAlgorithm.Run();
 }

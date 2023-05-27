@@ -21,7 +21,7 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// Gets or sets the selected sorting algorithm.
         /// </summary>
         [ObservableProperty]
-        private SortingAlgorithm _selectedAlgorithm;
+        private SortingAlgorithm _selectedSort;
 
         /// <summary>
         /// Indicates if an algorithm is running
@@ -62,7 +62,7 @@ namespace AvaloniaSortingVisualizer.ViewModels
             SortingAlgorithms = ConfigureAlgorithms(algorithms);
 
             // Set the selected algorithm to the first one in the ordered list
-            SelectedAlgorithm = SortingAlgorithms.First();
+            SelectedSort = SortingAlgorithms.First();
 
             // Configure the shuffler
             Shuffler = ConfigureShuffler(shuffler);
@@ -117,7 +117,7 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// </summary>
         /// <returns>A task representing the asynchronous operation.</returns>
         [RelayCommand]
-        private Task RunSortAsync() => RunAlgorithmAsync(SelectedAlgorithm);
+        private Task RunSortAsync() => RunAlgorithmAsync(SelectedSort);
 
         /// <summary>
         /// Runs the shuffle algorithm asynchronously.

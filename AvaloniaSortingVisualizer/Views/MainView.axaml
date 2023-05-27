@@ -45,7 +45,7 @@
     </ItemsControl>
 
     <StackPanel Orientation="Horizontal" Background="LightGray" Grid.Row="1">
-      <ComboBox Items="{Binding SortingAlgorithms}" SelectedItem="{Binding SelectedAlgorithm}">
+      <ComboBox Items="{Binding SortingAlgorithms}" SelectedItem="{Binding SelectedSort}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="algorithm:SortingAlgorithm">
             <TextBlock Text="{Binding Name}"/>

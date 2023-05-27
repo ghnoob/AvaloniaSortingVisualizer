@@ -10,13 +10,6 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public class BubbleSort : SortingAlgorithm
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BubbleSort"/> class.
-        /// </summary>
-        /// <param name="items">The list of items to be sorted.</param>
-        public BubbleSort(ObservableCollection<SortableElementViewModel> items)
-            : base(items) { }
-
         public override async Task RunRange(int start, int end)
         {
             bool sorted;

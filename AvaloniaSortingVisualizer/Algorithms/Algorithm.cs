@@ -22,13 +22,21 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <summary>
         /// Gets the list of items the algorithm will modify.
         /// </summary>
-        public ObservableCollection<SortableElementViewModel> Items { get; }
+        protected ObservableCollection<SortableElementViewModel> Items { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Algorithm"/> class.
         /// </summary>
-        /// <param name="items">The list of items to be modified.</param>
-        public Algorithm(ObservableCollection<SortableElementViewModel> items)
+        public Algorithm()
+        {
+            Items = new ObservableCollection<SortableElementViewModel>();
+        }
+
+        /// <summary>
+        /// Sets the collection of sortable element view models for the algorithm to operate on.
+        /// </summary>
+        /// <param name="items">The collection of sortable element view models.</param>
+        public void SetItems(ObservableCollection<SortableElementViewModel> items)
         {
             Items = items;
         }

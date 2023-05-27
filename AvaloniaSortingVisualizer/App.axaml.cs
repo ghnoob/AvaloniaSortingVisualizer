@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using AvaloniaSortingVisualizer.Algorithms;
 using AvaloniaSortingVisualizer.Services;
 using AvaloniaSortingVisualizer.ViewModels;
 using AvaloniaSortingVisualizer.Views;
@@ -44,6 +45,9 @@ public partial class App : Application
 
         // Services
         services.AddSingleton<ISortableElementService, SortableElementService>();
+
+        // Algorithms
+        services.AddTransient<SortingAlgorithm, BubbleSort>();
 
         // ViewModels
         services.AddTransient<MainViewModel>();

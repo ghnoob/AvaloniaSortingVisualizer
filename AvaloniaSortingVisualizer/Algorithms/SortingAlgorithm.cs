@@ -10,13 +10,6 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public abstract class SortingAlgorithm : Algorithm
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SortingAlgorithm"/> class.
-        /// </summary>
-        /// <param name="items">The list of items to be sorted.</param>
-        public SortingAlgorithm(ObservableCollection<SortableElementViewModel> items)
-            : base(items) { }
-
         public async override Task Run()
         {
             await base.Run();

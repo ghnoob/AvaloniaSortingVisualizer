@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
 using AvaloniaSortingVisualizer.ViewModels;
@@ -10,9 +10,9 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public abstract class SortingAlgorithm : Algorithm
     {
-        public async override Task Run()
+        public async override Task Run(CancellationToken cancellationToken)
         {
-            await base.Run();
+            await base.Run(cancellationToken);
             await FinalSweep();
         }
 

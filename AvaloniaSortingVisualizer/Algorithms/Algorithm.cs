@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
 using AvaloniaSortingVisualizer.ViewModels;
@@ -13,6 +14,8 @@ namespace AvaloniaSortingVisualizer.Algorithms
     public abstract class Algorithm : IComparer<SortableElementViewModel>
     {
         private const int MaxDelay = 2048;
+
+        private CancellationToken _cancellationToken;
 
         /// <summary>
         /// Gets the name of the algorithm.
@@ -45,7 +48,12 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// Delays the execution of the algorithm to visualize the changes.
         /// </summary>
         /// <returns>A task representing the delay.</returns>
-        protected Task UpdateBox() => Task.Delay(MaxDelay / Items.Count);
+        protected Task UpdateBox()
+        {
+            _cancellationToken.ThrowIfCancellationRequested();
+
+            return Task.Delay(MaxDelay / Items.Count);
+        }
 
         /// <summary>
         /// Updates the state of an element at the specified index and delays the execution.
@@ -118,9 +126,14 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <summary>
         /// Runs the algorithm on all elements in the list.
         /// </summary>
+        /// <param name="cancellationToken">
+        /// A cancellation token that can be used to cancel the operation.
+        /// </param>
         /// <returns>A task representing the sort operation.</returns>
-        public virtual async Task Run()
+        public virtual async Task Run(CancellationToken cancellationToken)
         {
+            _cancellationToken = cancellationToken;
+
             await RunRange(0, Items.Count);
             ClearAllStatuses();
         }
@@ -138,7 +151,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <summary>
         /// Clears the status of all elements in the collection.
         /// </summary>
-        protected void ClearAllStatuses()
+        public void ClearAllStatuses()
         {
             foreach (
                 SortableElementViewModel vm in Items.Where(

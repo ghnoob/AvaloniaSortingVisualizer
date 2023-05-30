@@ -13,6 +13,7 @@
     <converter:SortableElementStatusConverter x:Key="SortableElementStatusConverter"/>
     <converter:DoubleToGridLengthConverter x:Key="DoubleToGridLengthConverter"/>
     <converter:ProportionalHeightConverter x:Key="ProportionalHeightConverter"/>
+    <converter:DoubleToIntConverter x:Key="DoubleToIntConverter"/>
   </UserControl.Resources>
 
   <Grid Background="Black" RowDefinitions="* Auto">
@@ -44,28 +45,67 @@
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    <StackPanel Orientation="Horizontal" Background="LightGray" Grid.Row="1">
-      <ComboBox Items="{Binding SortingAlgorithms}" SelectedItem="{Binding SelectedSort}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate DataType="algorithm:SortingAlgorithm">
-            <TextBlock Text="{Binding Name}"/>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
-      <Button Command="{Binding RunAlgorithmCommand}"
-              CommandParameter="{Binding SelectedSort}"
-              IsEnabled="{Binding !IsRunning}">
-        Sort
-      </Button>
+    <Grid Background="LightGray" ColumnDefinitions="* Auto Auto 2*" Grid.Row="1">
+      <Grid ColumnDefinitions="* Auto" Grid.Column="0">
+        <ComboBox
+          Items="{Binding SortingAlgorithms}"
+          SelectedItem="{Binding SelectedSort}"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Stretch"
+          Grid.Column="0">
+          <ComboBox.ItemTemplate>
+            <DataTemplate DataType="algorithm:SortingAlgorithm">
+              <TextBlock Text="{Binding Name}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Command="{Binding RunAlgorithmCommand}"
+                CommandParameter="{Binding SelectedSort}"
+                IsEnabled="{Binding !IsRunning}"
+                Grid.Column="1">
+          Sort
+        </Button>
+      </Grid>
       <Button Command="{Binding RunAlgorithmCommand}"
               CommandParameter="{Binding Shuffler}"
-              IsEnabled="{Binding !IsRunning}">
+              IsEnabled="{Binding !IsRunning}"
+              Grid.Column="1">
         Shuffle
       </Button>
       <Button Command="{Binding RunAlgorithmCancelCommand}"
-              IsEnabled="{Binding IsRunning}">
+              IsEnabled="{Binding IsRunning}"
+              Grid.Column="2">
         Stop
       </Button>
-    </StackPanel>
+      <Grid Margin="5" ColumnDefinitions="Auto * Auto" Grid.Column="3">
+          <TextBlock Grid.Column="0"
+                     Padding="0"
+                     Margin="5 0"
+                     VerticalAlignment="Center">
+            Array length
+          </TextBlock>
+          <Slider Grid.Column="1"
+                  Value="{Binding DefaultArrayLength, Mode=OneTime}"
+                  Minimum="8"
+                  Maximum="128"
+                  TickFrequency="1"
+                  IsSnapToTickEnabled="True"
+                  HorizontalAlignment="Stretch"
+                  Name="ArrayLengthSelector">
+              <Slider.Styles>
+                  <Style Selector="Slider /template/ Thumb">
+                      <Setter Property="ToolTip.Tip" Value="{Binding $parent[Slider].Value, Mode=OneWay}" />
+                      <Setter Property="ToolTip.Placement" Value="Top" />
+                      <Setter Property="ToolTip.VerticalOffset" Value="-10" />
+                      <Setter Property="ToolTip.HorizontalOffset" Value="-30" />
+                  </Style>
+              </Slider.Styles>
+          </Slider>
+          <Button Command="{Binding ChangeArrayLengthCommand}"
+                  CommandParameter="{Binding #ArrayLengthSelector.Value, Converter={StaticResource DoubleToIntConverter} Mode=OneWay}"
+                  Grid.Column="2"
+          >Generate</Button>
+      </Grid>
+    </Grid>
   </Grid>
 </UserControl>

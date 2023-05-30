@@ -26,6 +26,7 @@ namespace AvaloniaSortingVisualizer.Converters
                 && values.Count >= 2
                 && values[0] is double value
                 && values[1] is int itemsCount
+                && itemsCount >= value
             )
             {
                 // Calculate the proportional height using the item count and the provided value.

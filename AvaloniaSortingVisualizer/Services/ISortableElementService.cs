@@ -9,9 +9,10 @@ namespace AvaloniaSortingVisualizer.Services
     public interface ISortableElementService
     {
         /// <summary>
-        /// Gets the collection of sortable elements.
+        /// Generates a collection of sortable elements.
         /// </summary>
-        /// <returns>The collection of sortable elements.</returns>
-        IEnumerable<SortableElementModel> GetItems();
+        /// <param name="length">Length of the collection</param>
+        /// <returns>The generated collection</returns>
+        IEnumerable<SortableElementModel> GenerateItems(int length);
     }
 }

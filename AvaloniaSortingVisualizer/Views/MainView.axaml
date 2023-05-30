@@ -49,10 +49,11 @@
       <Grid ColumnDefinitions="* Auto" Grid.Column="0">
         <ComboBox
           Items="{Binding SortingAlgorithms}"
-          SelectedItem="{Binding SelectedSort}"
+          SelectedIndex="0"
           VerticalAlignment="Center"
           HorizontalAlignment="Stretch"
-          Grid.Column="0">
+          Grid.Column="0"
+          Name="SortingAlgorithmSelector">
           <ComboBox.ItemTemplate>
             <DataTemplate DataType="algorithm:SortingAlgorithm">
               <TextBlock Text="{Binding Name}"/>
@@ -60,7 +61,7 @@
           </ComboBox.ItemTemplate>
         </ComboBox>
         <Button Command="{Binding RunAlgorithmCommand}"
-                CommandParameter="{Binding SelectedSort}"
+                CommandParameter="{Binding #SortingAlgorithmSelector.SelectedItem, Mode=OneWay}"
                 IsEnabled="{Binding !IsRunning}"
                 Grid.Column="1">
           Sort

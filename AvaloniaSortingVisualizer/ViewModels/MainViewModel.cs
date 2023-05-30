@@ -27,12 +27,6 @@ namespace AvaloniaSortingVisualizer.ViewModels
         private ObservableCollection<SortableElementViewModel> _items;
 
         /// <summary>
-        /// Gets or sets the selected sorting algorithm.
-        /// </summary>
-        [ObservableProperty]
-        private SortingAlgorithm _selectedSort;
-
-        /// <summary>
         /// Indicates if an algorithm is running
         /// </summary>
         [ObservableProperty]
@@ -63,7 +57,6 @@ namespace AvaloniaSortingVisualizer.ViewModels
             _sortableElementService = service;
             Items = GenerateObservableCollection(DefaultArrayLength);
             SortingAlgorithms = algorithms.OrderBy(alg => alg.Name);
-            SelectedSort = SortingAlgorithms.First();
             Shuffler = shuffler;
             IsRunning = false;
         }

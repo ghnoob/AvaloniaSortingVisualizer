@@ -1,4 +1,5 @@
 ﻿using System;
+using AvaloniaSortingVisualizer.Services;
 
 namespace AvaloniaSortingVisualizer.Algorithms
 {
@@ -15,7 +16,8 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <summary>
         /// Initializes a new instance of the <see cref="Shuffle"/> class.
         /// </summary>
-        public RandomShuffle()
+        protected RandomShuffle(ISoundService soundService)
+            : base(soundService)
         {
             Rng = new Random();
         }

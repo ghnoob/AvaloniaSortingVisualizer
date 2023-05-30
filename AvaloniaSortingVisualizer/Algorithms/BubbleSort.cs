@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
+using AvaloniaSortingVisualizer.Services;
 using AvaloniaSortingVisualizer.ViewModels;
 
 namespace AvaloniaSortingVisualizer.Algorithms
@@ -10,6 +11,9 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public class BubbleSort : SortingAlgorithm
     {
+        public BubbleSort(ISoundService soundService)
+            : base(soundService) { }
+
         public override async Task RunRange(int start, int end)
         {
             bool sorted;

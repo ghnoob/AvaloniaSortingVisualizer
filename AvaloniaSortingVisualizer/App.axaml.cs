@@ -45,6 +45,7 @@ public partial class App : Application
 
         // Services
         services.AddSingleton<ISortableElementService, SortableElementService>();
+        services.AddSingleton<ISoundService, SoundService>();
 
         // Algorithms
         services.AddTransient<SortingAlgorithm, BubbleSort>();

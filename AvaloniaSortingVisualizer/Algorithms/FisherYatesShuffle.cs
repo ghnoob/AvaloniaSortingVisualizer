@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AvaloniaSortingVisualizer.Services;
 
 namespace AvaloniaSortingVisualizer.Algorithms
 {
@@ -7,6 +8,9 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public class FisherYatesShuffle : RandomShuffle
     {
+        public FisherYatesShuffle(ISoundService soundService)
+            : base(soundService) { }
+
         public override async Task RunRange(int start, int end)
         {
             for (int i = start; i < end - 1; i++)

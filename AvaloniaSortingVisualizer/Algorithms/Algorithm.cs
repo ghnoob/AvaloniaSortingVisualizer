@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
+using AvaloniaSortingVisualizer.Services;
 using AvaloniaSortingVisualizer.ViewModels;
 
 namespace AvaloniaSortingVisualizer.Algorithms
@@ -16,6 +17,11 @@ namespace AvaloniaSortingVisualizer.Algorithms
         private const int MaxDelay = 2048;
 
         private CancellationToken _cancellationToken;
+
+        protected readonly ISoundService _soundService;
+
+        protected int itemsCount;
+        private int delay;
 
         /// <summary>
         /// Gets the name of the algorithm.
@@ -30,9 +36,10 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <summary>
         /// Initializes a new instance of the <see cref="Algorithm"/> class.
         /// </summary>
-        public Algorithm()
+        public Algorithm(ISoundService soundService)
         {
             Items = new ObservableCollection<SortableElementViewModel>();
+            _soundService = soundService;
         }
 
         /// <summary>
@@ -52,7 +59,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
         {
             _cancellationToken.ThrowIfCancellationRequested();
 
-            return Task.Delay(MaxDelay / Items.Count);
+            return Task.Delay(delay);
         }
 
         /// <summary>
@@ -62,11 +69,15 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int index)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+
             SortableElementViewModel vm = Items[index];
             SortableElementStatus tmpStatus = vm.Status;
 
             vm.Status = SortableElementStatus.Tracked;
-            await UpdateBox();
+
+            MidiNotes note = _soundService.CalculateNote(vm.Value, itemsCount);
+            await _soundService.PlayNoteAsync(note, delay);
             vm.Status = tmpStatus;
         }
 
@@ -78,12 +89,21 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB)
         {
-            SortableElementViewModel vm = Items[indexB];
-            SortableElementStatus tmpStatus = vm.Status;
+            SortableElementViewModel vmA = Items[indexA];
+            SortableElementStatus tmpStatusA = vmA.Status;
+            SortableElementViewModel vmB = Items[indexB];
+            SortableElementStatus tmpStatusB = vmB.Status;
 
-            vm.Status = SortableElementStatus.Tracked;
-            await UpdateBox(indexA);
-            vm.Status = tmpStatus;
+            vmA.Status = SortableElementStatus.Tracked;
+            vmB.Status = SortableElementStatus.Tracked;
+
+            MidiNotes noteA = _soundService.CalculateNote(vmA.Value, itemsCount);
+            MidiNotes noteB = _soundService.CalculateNote(vmB.Value, itemsCount);
+
+            await _soundService.PlayNotesAsync(noteA, noteB, delay);
+
+            vmA.Status = tmpStatusA;
+            vmB.Status = tmpStatusB;
         }
 
         /// <summary>
@@ -95,12 +115,26 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB, int indexC)
         {
-            SortableElementViewModel vm = Items[indexC];
-            SortableElementStatus tmpStatus = vm.Status;
+            SortableElementViewModel vmA = Items[indexA];
+            SortableElementStatus tmpStatusA = vmA.Status;
+            SortableElementViewModel vmB = Items[indexB];
+            SortableElementStatus tmpStatusB = vmB.Status;
+            SortableElementViewModel vmC = Items[indexC];
+            SortableElementStatus tmpStatusC = vmC.Status;
 
-            vm.Status = SortableElementStatus.Tracked;
-            await UpdateBox(indexA, indexB);
-            vm.Status = tmpStatus;
+            vmA.Status = SortableElementStatus.Tracked;
+            vmB.Status = SortableElementStatus.Tracked;
+            vmC.Status = SortableElementStatus.Tracked;
+
+            MidiNotes noteA = _soundService.CalculateNote(vmA.Value, itemsCount);
+            MidiNotes noteB = _soundService.CalculateNote(vmB.Value, itemsCount);
+            MidiNotes noteC = _soundService.CalculateNote(vmC.Value, itemsCount);
+
+            await _soundService.PlayNotesAsync(noteA, noteB, noteC, delay);
+
+            vmA.Status = tmpStatusA;
+            vmB.Status = tmpStatusB;
+            vmC.Status = tmpStatusC;
         }
 
         /// <summary>
@@ -133,8 +167,10 @@ namespace AvaloniaSortingVisualizer.Algorithms
         public virtual async Task Run(CancellationToken cancellationToken)
         {
             _cancellationToken = cancellationToken;
+            itemsCount = Items.Count;
+            delay = MaxDelay / itemsCount;
 
-            await RunRange(0, Items.Count);
+            await RunRange(0, itemsCount);
             ClearAllStatuses();
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaSortingVisualizer.Models;
+using AvaloniaSortingVisualizer.Services;
 using AvaloniaSortingVisualizer.ViewModels;
 
 namespace AvaloniaSortingVisualizer.Algorithms
@@ -10,6 +11,9 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public abstract class SortingAlgorithm : Algorithm
     {
+        protected SortingAlgorithm(ISoundService soundService)
+            : base(soundService) { }
+
         public async override Task Run(CancellationToken cancellationToken)
         {
             await base.Run(cancellationToken);
@@ -22,10 +26,13 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the final sweep operation.</returns>
         private async Task FinalSweep()
         {
-            foreach (SortableElementViewModel vm in Items)
+            for (int i = 0; i < itemsCount; i++)
             {
+                SortableElementViewModel vm = Items[i];
+
                 vm.Status = SortableElementStatus.Sorted;
-                await UpdateBox();
+                MidiNotes note = _soundService.CalculateNote(vm.Value, itemsCount);
+                await _soundService.PlayNoteAsync(note, 1);
             }
 
             ClearAllStatuses();

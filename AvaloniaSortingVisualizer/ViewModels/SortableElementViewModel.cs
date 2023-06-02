@@ -1,4 +1,6 @@
-﻿using AvaloniaSortingVisualizer.Models;
+﻿using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using AvaloniaSortingVisualizer.Models;
 
 namespace AvaloniaSortingVisualizer.ViewModels
 {
@@ -37,6 +39,18 @@ namespace AvaloniaSortingVisualizer.ViewModels
         public SortableElementViewModel(SortableElementModel model)
         {
             _model = model;
+        }
+
+        /// <summary>
+        /// Gets a color representing the current Status
+        /// </summary>
+        public SolidColorPaint GetColor()
+        {
+            if (Status == SortableElementStatus.Normal)
+                return new SolidColorPaint(SKColors.White);
+            if (Status == SortableElementStatus.Tracked)
+                return new SolidColorPaint(SKColors.Red);
+            return new SolidColorPaint(SKColors.Green);
         }
     }
 }

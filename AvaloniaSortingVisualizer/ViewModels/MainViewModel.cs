@@ -6,6 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 using AvaloniaSortingVisualizer.Algorithms;
 using AvaloniaSortingVisualizer.Services;
 
@@ -23,7 +28,6 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// <summary>
         /// Gets or sets the collection of sortable element view models.
         /// </summary>
-        [ObservableProperty]
         private ObservableCollection<SortableElementViewModel> _items;
 
         /// <summary>
@@ -44,6 +48,21 @@ namespace AvaloniaSortingVisualizer.ViewModels
         public IOrderedEnumerable<SortingAlgorithm> SortingAlgorithms { get; }
 
         /// <summary>
+        /// Gets the x axes.
+        /// </summary>
+        public IList<Axis> XAxes { get; }
+
+        /// <summary>
+        /// Gets the y axes.
+        /// </summary>
+        public IList<Axis> YAxes { get; }
+
+        /// <summary>
+        /// Gets a collection of cartesian chart series
+        /// </summary>
+        public ObservableCollection<ISeries> Series { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
         /// <param name="service">The sortable element service.</param>
@@ -55,11 +74,38 @@ namespace AvaloniaSortingVisualizer.ViewModels
         )
         {
             _sortableElementService = service;
-            Items = GenerateObservableCollection(DefaultArrayLength);
+            _items = GenerateObservableCollection(DefaultArrayLength);
+            XAxes = new Axis[] { new Axis { IsVisible = false } };
+            YAxes = new Axis[] { new Axis { IsVisible = false } };
+            Series = ConfigureSeries();
             SortingAlgorithms = algorithms.OrderBy(alg => alg.Name);
             Shuffler = shuffler;
             IsRunning = false;
         }
+
+        /// <summary>
+        /// Creates a collection of cartesian chart series
+        /// </summary>
+        /// <returns>The created collection</returns>
+        private ObservableCollection<ISeries> ConfigureSeries() =>
+            new ObservableCollection<ISeries>
+            {
+                new ColumnSeries<SortableElementViewModel, RectangleGeometry>
+                {
+                    Values = _items,
+                    MaxBarWidth = double.PositiveInfinity,
+                    Padding = 0,
+                    Fill = new SolidColorPaint(SKColors.White),
+                    Mapping = (vm, point) =>
+                    {
+                        point.PrimaryValue = vm.Value;
+                        point.SecondaryValue = point.Context.Entity.EntityIndex;
+
+                        if (point.Context.Visual is RectangleGeometry rect)
+                            rect.Fill = vm.GetColor();
+                    }
+                }
+            };
 
         /// <summary>
         /// Runs an algorithm asynchronously.
@@ -72,7 +118,7 @@ namespace AvaloniaSortingVisualizer.ViewModels
             IsRunning = true;
             try
             {
-                algorithm.SetItems(Items);
+                algorithm.SetItems(_items);
                 await algorithm.Run(token);
             }
             catch (OperationCanceledException)
@@ -107,7 +153,8 @@ namespace AvaloniaSortingVisualizer.ViewModels
         [RelayCommand(CanExecute = nameof(CanChangeArrayLength))]
         private void ChangeArrayLength(int length)
         {
-            Items = GenerateObservableCollection(length);
+            _items = GenerateObservableCollection(length);
+            Series[0].Values = _items;
         }
     }
 }

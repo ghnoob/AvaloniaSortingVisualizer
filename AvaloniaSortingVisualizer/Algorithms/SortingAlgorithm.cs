@@ -28,11 +28,8 @@ namespace AvaloniaSortingVisualizer.Algorithms
         {
             for (int i = 0; i < itemsCount; i++)
             {
-                SortableElementViewModel vm = Items[i];
-
-                vm.Status = SortableElementStatus.Sorted;
-                MidiNotes note = _soundService.CalculateNote(vm.Value, itemsCount);
-                await _soundService.PlayNoteAsync(note, 1);
+                await UpdateBox(i);
+                Items[i].Status = SortableElementStatus.Sorted;
             }
 
             ClearAllStatuses();

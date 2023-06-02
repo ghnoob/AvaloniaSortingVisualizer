@@ -18,7 +18,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
 
         private CancellationToken _cancellationToken;
 
-        protected readonly ISoundService _soundService;
+        private readonly ISoundService _soundService;
 
         protected int itemsCount;
         private int delay;

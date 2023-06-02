@@ -65,7 +65,7 @@
           <Slider Grid.Column="1"
                   Value="{Binding DefaultArrayLength, Mode=OneTime}"
                   Minimum="8"
-                  Maximum="128"
+                  Maximum="1024"
                   TickFrequency="1"
                   IsSnapToTickEnabled="True"
                   HorizontalAlignment="Stretch"

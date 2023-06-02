@@ -14,7 +14,7 @@ namespace AvaloniaSortingVisualizer.Algorithms
     /// </summary>
     public abstract class Algorithm : IComparer<SortableElementViewModel>
     {
-        private const int MaxDelay = 2048;
+        private const int MaxDelay = 1024;
 
         private CancellationToken _cancellationToken;
 

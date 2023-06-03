@@ -15,12 +15,14 @@ namespace AvaloniaSortingVisualizer;
 
 public partial class App : Application
 {
+    /// <inheritdoc/>
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         this.ConfigureServices();
     }
 
+    /// <inheritdoc/>
     public override void OnFrameworkInitializationCompleted()
     {
         if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -49,6 +51,7 @@ public partial class App : Application
 
         // Algorithms
         services.AddTransient<SortingAlgorithm, BubbleSort>();
+        services.AddTransient<SortingAlgorithm, CocktailSort>();
         services.AddTransient<SortingAlgorithm, CombSort>();
 
         services.AddTransient<Shuffle, FisherYatesShuffle>();

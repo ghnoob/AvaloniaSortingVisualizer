@@ -5,35 +5,47 @@
     using AvaloniaSortingVisualizer.Services;
 
     /// <summary>
-    /// Implementation of the bubble sort algorithm.
+    /// Implementation of the Cocktail Sort algorithm.
     /// </summary>
-    public class BubbleSort : SortingAlgorithm
+    public class CocktailSort : BubbleSort
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BubbleSort"/> class.
+        /// Initializes a new instance of the <see cref="CocktailSort"/> class.
         /// </summary>
         /// <param name="soundService">Service that will be used for playing sounds.</param>
-        public BubbleSort(ISoundService soundService)
+        public CocktailSort(ISoundService soundService)
             : base(soundService) { }
 
         /// <inheritdoc/>
         public override async Task RunRange(int start, int end)
         {
-            bool sorted;
-            int i = end;
+            bool sorted = false;
+            bool rightToLeft = false;
+            int i = start,
+                j = end;
 
-            do
+            while (!sorted)
             {
-                sorted = !(await this.BubbleFromLeftToRight(start, i));
-                i--;
-            } while (!sorted);
+                if (rightToLeft)
+                {
+                    sorted = !(await this.BubbleFromRightToLeft(i, j));
+                    j--;
+                    i++;
+                }
+                else
+                {
+                    sorted = !(await this.BubbleFromLeftToRight(i, j));
+                }
+
+                rightToLeft = !rightToLeft;
+            }
         }
 
         /// <inheritdoc/>
-        public override string ToString() => "Bubble Sort";
+        public override string ToString() => "Cocktail Sort";
 
         /// <summary>
-        /// Performs the bubble sort algorithm by moving elements from left to right
+        /// Performs the bubble sort algorithm by moving elements from right to left
         /// in the specified range.
         /// </summary>
         /// <param name="left">The starting index of the range (inclusive).</param>
@@ -43,15 +55,15 @@
         /// The task result is a boolean value indicating whether any elements were changed
         /// during the sorting process.
         /// </returns>
-        protected async Task<bool> BubbleFromLeftToRight(int left, int right)
+        private async Task<bool> BubbleFromRightToLeft(int left, int right)
         {
             bool changed = false;
 
-            for (int i = left; i < right - 1; i++)
+            for (int i = right - 1; i > left; i--)
             {
-                if (this.Compare(this.Items[i], this.Items[i + 1]) > 0)
+                if (this.Compare(this.Items[i], this.Items[i - 1]) < 0)
                 {
-                    await this.Swap(i, i + 1);
+                    await this.Swap(i, i - 1);
                     changed = true;
                 }
                 else
@@ -60,7 +72,7 @@
                 }
             }
 
-            this.Items[right - 1].Status = SortableElementStatus.Sorted;
+            this.Items[left].Status = SortableElementStatus.Sorted;
 
             return changed;
         }

@@ -9,6 +9,7 @@
     /// </summary>
     public class SortableElementService : ISortableElementService
     {
+        /// <inheritdoc/>
         public IEnumerable<SortableElementModel> GenerateItems(int length) =>
             Enumerable.Range(1, length).Select(i => new SortableElementModel { Value = i });
     }

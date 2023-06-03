@@ -15,8 +15,7 @@
             object? value,
             Type targetType,
             object? parameter,
-            CultureInfo culture
-        )
+            CultureInfo culture)
         {
             if (value is double val && targetType.IsAssignableFrom(typeof(int)))
             {
@@ -31,8 +30,7 @@
             object? value,
             Type targetType,
             object? parameter,
-            CultureInfo culture
-        )
+            CultureInfo culture)
         {
             if (value is int val && targetType.IsAssignableFrom(typeof(double)))
             {

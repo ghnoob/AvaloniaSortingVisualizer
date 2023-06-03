@@ -1,63 +1,65 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using Avalonia.Markup.Xaml;
-using AvaloniaSortingVisualizer.Algorithms;
-using AvaloniaSortingVisualizer.Services;
-using AvaloniaSortingVisualizer.ViewModels;
-using AvaloniaSortingVisualizer.Views;
-using Microsoft.Extensions.DependencyInjection;
-using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
-
-namespace AvaloniaSortingVisualizer;
-
-public partial class App : Application
+﻿namespace AvaloniaSortingVisualizer
 {
-    /// <inheritdoc/>
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-        this.ConfigureServices();
-    }
+    using Avalonia;
+    using Avalonia.Controls.ApplicationLifetimes;
+    using Avalonia.Data.Core;
+    using Avalonia.Data.Core.Plugins;
+    using Avalonia.Markup.Xaml;
+    using AvaloniaSortingVisualizer.Algorithms;
+    using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
+    using AvaloniaSortingVisualizer.Views;
+    using Microsoft.Extensions.DependencyInjection;
+    using Splat;
+    using Splat.Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc/>
-    public override void OnFrameworkInitializationCompleted()
+    public partial class App : Application
     {
-        if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        /// <inheritdoc/>
+        public override void Initialize()
         {
-            // Line below is needed to remove Avalonia data validation.
-            // Without this line you will get duplicate validations from both Avalonia and CT
-            ExpressionObserver.DataValidators.RemoveAll(x => x is DataAnnotationsValidationPlugin);
-            desktop.MainWindow = new MainWindow();
+            AvaloniaXamlLoader.Load(this);
+            this.ConfigureServices();
         }
 
-        base.OnFrameworkInitializationCompleted();
-    }
+        /// <inheritdoc/>
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                // Line below is needed to remove Avalonia data validation.
+                // Without this line you will get duplicate validations from both Avalonia and CT
+                ExpressionObserver.DataValidators.RemoveAll(x => x is DataAnnotationsValidationPlugin);
+                desktop.MainWindow = new MainWindow();
+            }
 
-    /// <summary>
-    /// Configures the services for the application.
-    /// </summary>
-    private void ConfigureServices()
-    {
-        IServiceCollection services = new ServiceCollection();
-        services.UseMicrosoftDependencyResolver();
-        Locator.CurrentMutable.InitializeSplat();
+            base.OnFrameworkInitializationCompleted();
+        }
 
-        // Services
-        services.AddSingleton<ISortableElementService, SortableElementService>();
-        services.AddSingleton<ISoundService, SoundService>();
+        /// <summary>
+        /// Configures the services for the application.
+        /// </summary>
+        private void ConfigureServices()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.UseMicrosoftDependencyResolver();
+            Locator.CurrentMutable.InitializeSplat();
 
-        // Algorithms
-        services.AddTransient<SortingAlgorithm, BubbleSort>();
-        services.AddTransient<SortingAlgorithm, CocktailSort>();
-        services.AddTransient<SortingAlgorithm, CombSort>();
-        services.AddTransient<SortingAlgorithm, GnomeSort>();
+            // Services
+            services.AddSingleton<ISortableElementService, SortableElementService>();
+            services.AddSingleton<ISoundService, SoundService>();
 
-        services.AddTransient<Shuffle, FisherYatesShuffle>();
+            // Algorithms
+            services.AddTransient<SortingAlgorithm, BubbleSort>();
+            services.AddTransient<SortingAlgorithm, CocktailSort>();
+            services.AddTransient<SortingAlgorithm, CombSort>();
+            services.AddTransient<SortingAlgorithm, GnomeSort>();
 
-        // ViewModels
-        services.AddTransient<MainViewModel>();
+            services.AddTransient<Shuffle, FisherYatesShuffle>();
+
+            // ViewModels
+            services.AddTransient<MainViewModel>();
+        }
     }
 }

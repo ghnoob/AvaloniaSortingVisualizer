@@ -14,7 +14,9 @@
         /// </summary>
         /// <param name="soundService">Service that will be used for playing sounds.</param>
         public BubbleSort(ISoundService soundService)
-            : base(soundService) { }
+            : base(soundService)
+        {
+        }
 
         /// <inheritdoc/>
         public override async Task RunRange(int start, int end)
@@ -26,7 +28,8 @@
             {
                 sorted = !(await this.BubbleFromLeftToRight(start, i));
                 i--;
-            } while (!sorted);
+            }
+            while (!sorted);
         }
 
         /// <inheritdoc/>

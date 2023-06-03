@@ -22,8 +22,7 @@
         private static readonly string SoundfontPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,
             "Soundfonts",
-            "CalculatorSF-balanced2.sf2"
-        );
+            "CalculatorSF-balanced2.sf2");
 
         private readonly Settings settings;
         private readonly Synth synth;
@@ -52,9 +51,11 @@
             SDL.SDL_QuitSubSystem(SDL.SDL_INIT_AUDIO);
         }
 
+        /// <inheritdoc/>
         public MidiNotes CalculateNote(double value, int maxValue) =>
             (MidiNotes)((value * (HighestNote - LowestNote) / maxValue) + LowestNote);
 
+        /// <inheritdoc/>
         public async Task PlayNoteAsync(MidiNotes note, int duration)
         {
             this.synth.NoteOn(MidiChannel1, (int)note, MidiVelocity);
@@ -62,6 +63,7 @@
             this.synth.NoteOff(MidiChannel1, (int)note);
         }
 
+        /// <inheritdoc/>
         public async Task PlayNotesAsync(MidiNotes note1, MidiNotes note2, int duration)
         {
             this.synth.NoteOn(MidiChannel1, (int)note1, MidiVelocity);
@@ -69,6 +71,22 @@
             await Task.Delay(duration);
             this.synth.NoteOff(MidiChannel1, (int)note1);
             this.synth.NoteOff(MidiChannel2, (int)note2);
+        }
+
+        /// <inheritdoc/>
+        public async Task PlayNotesAsync(
+            MidiNotes note1,
+            MidiNotes note2,
+            MidiNotes note3,
+            int duration)
+        {
+            this.synth.NoteOn(MidiChannel1, (int)note1, MidiVelocity);
+            this.synth.NoteOn(MidiChannel2, (int)note2, MidiVelocity);
+            this.synth.NoteOn(MidiChannel3, (int)note3, MidiVelocity);
+            await Task.Delay(duration);
+            this.synth.NoteOff(MidiChannel1, (int)note1);
+            this.synth.NoteOff(MidiChannel2, (int)note2);
+            this.synth.NoteOff(MidiChannel3, (int)note3);
         }
 
         /// <summary>
@@ -108,22 +126,6 @@
             synth.ProgramChange(MidiChannel3, MidiInstrument);
 
             return synth;
-        }
-
-        public async Task PlayNotesAsync(
-            MidiNotes note1,
-            MidiNotes note2,
-            MidiNotes note3,
-            int duration
-        )
-        {
-            this.synth.NoteOn(MidiChannel1, (int)note1, MidiVelocity);
-            this.synth.NoteOn(MidiChannel2, (int)note2, MidiVelocity);
-            this.synth.NoteOn(MidiChannel3, (int)note3, MidiVelocity);
-            await Task.Delay(duration);
-            this.synth.NoteOff(MidiChannel1, (int)note1);
-            this.synth.NoteOff(MidiChannel2, (int)note2);
-            this.synth.NoteOff(MidiChannel3, (int)note3);
         }
     }
 }

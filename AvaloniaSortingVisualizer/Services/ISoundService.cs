@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="note1">First note to play.</param>
         /// <param name="note2">Second note to play.</param>
-        /// <param name="note3">Second note to play.</param>
+        /// <param name="note3">Third note to play.</param>
         /// <param name="duration">Duration of the note in miliseconds.</param>
         /// <returns>A <see cref="Task"/> representing the operation.</returns>
         public Task PlayNotesAsync(MidiNotes note1, MidiNotes note2, MidiNotes note3, int duration);

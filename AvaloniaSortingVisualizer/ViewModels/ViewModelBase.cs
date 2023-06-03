@@ -1,5 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿namespace AvaloniaSortingVisualizer.ViewModels
+{
+    using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AvaloniaSortingVisualizer.ViewModels;
-
-public class ViewModelBase : ObservableObject { }
+    /// <summary>
+    /// Base class for view models.
+    /// </summary>
+    public class ViewModelBase : ObservableObject
+    {
+    }
+}

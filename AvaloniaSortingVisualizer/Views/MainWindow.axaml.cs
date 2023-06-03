@@ -1,11 +1,18 @@
-using Avalonia.Controls;
-
-namespace AvaloniaSortingVisualizer.Views;
-
-public partial class MainWindow : Window
+﻿namespace AvaloniaSortingVisualizer.Views
 {
-    public MainWindow()
+    using Avalonia.Controls;
+
+    /// <summary>
+    /// Main application window.
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        this.InitializeComponent();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        public MainWindow()
+        {
+            this.InitializeComponent();
+        }
     }
 }

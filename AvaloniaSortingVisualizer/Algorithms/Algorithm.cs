@@ -14,18 +14,32 @@
     /// </summary>
     public abstract class Algorithm : IComparer<SortableElementViewModel>
     {
-        protected int itemsCount;
-
+        /// <summary>
+        /// Maximum time in ms between algorithm steps.
+        /// </summary>
         private const int MaxDelay = 1024;
 
+        /// <summary>
+        /// Service to play sounds to complement the algorithm visualization.
+        /// </summary>
         private readonly ISoundService soundService;
 
+        /// <summary>
+        /// Token to cancel to operation.
+        /// </summary>
         private CancellationToken cancellationToken;
+
+        /// <summary>
+        /// Time in ms between algorithm steps.
+        /// </summary>
         private int delay;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Algorithm"/> class.
         /// </summary>
+        /// <param name="soundService">
+        /// Service to play sounds to complement the algorithm visualization.
+        /// </param>
         public Algorithm(ISoundService soundService)
         {
             this.Items = new ObservableCollection<SortableElementViewModel>();
@@ -36,6 +50,11 @@
         /// Gets the name of the algorithm.
         /// </summary>
         public string Name => this.ToString();
+
+        /// <summary>
+        /// Gets or sets amount of items to operate on.
+        /// </summary>
+        protected int ItemsCount { get; set; }
 
         /// <summary>
         /// Gets the list of items the algorithm will modify.
@@ -69,13 +88,14 @@
         public virtual async Task Run(CancellationToken cancellationToken)
         {
             this.cancellationToken = cancellationToken;
-            this.itemsCount = this.Items.Count;
-            this.delay = MaxDelay / this.itemsCount;
+            this.ItemsCount = this.Items.Count;
+            this.delay = MaxDelay / this.ItemsCount;
 
-            await this.RunRange(0, this.itemsCount);
+            await this.RunRange(0, this.ItemsCount);
             this.ClearAllStatuses();
         }
 
+        /// <inheritdoc/>
         public int Compare(SortableElementViewModel? x, SortableElementViewModel? y)
         {
             if (x == null)
@@ -90,6 +110,22 @@
 
             return x.Value.CompareTo(y.Value);
         }
+
+        /// <summary>
+        /// Clears the status of all elements in the collection.
+        /// </summary>
+        public void ClearAllStatuses()
+        {
+            foreach (
+                SortableElementViewModel vm in this.Items.Where(
+                    item => item.Status != SortableElementStatus.Normal))
+            {
+                vm.Status = SortableElementStatus.Normal;
+            }
+        }
+
+        /// <inheritdoc/>
+        public abstract override string ToString();
 
         /// <summary>
         /// Delays the execution of the algorithm to visualize the changes.
@@ -116,7 +152,7 @@
 
             vm.Status = SortableElementStatus.Tracked;
 
-            MidiNotes note = this.soundService.CalculateNote(vm.Value, this.itemsCount);
+            MidiNotes note = this.soundService.CalculateNote(vm.Value, this.ItemsCount);
             await this.soundService.PlayNoteAsync(note, this.delay);
             vm.Status = tmpStatus;
         }
@@ -137,8 +173,8 @@
             vmA.Status = SortableElementStatus.Tracked;
             vmB.Status = SortableElementStatus.Tracked;
 
-            MidiNotes noteA = this.soundService.CalculateNote(vmA.Value, this.itemsCount);
-            MidiNotes noteB = this.soundService.CalculateNote(vmB.Value, this.itemsCount);
+            MidiNotes noteA = this.soundService.CalculateNote(vmA.Value, this.ItemsCount);
+            MidiNotes noteB = this.soundService.CalculateNote(vmB.Value, this.ItemsCount);
 
             await this.soundService.PlayNotesAsync(noteA, noteB, this.delay);
 
@@ -166,9 +202,9 @@
             vmB.Status = SortableElementStatus.Tracked;
             vmC.Status = SortableElementStatus.Tracked;
 
-            MidiNotes noteA = this.soundService.CalculateNote(vmA.Value, this.itemsCount);
-            MidiNotes noteB = this.soundService.CalculateNote(vmB.Value, this.itemsCount);
-            MidiNotes noteC = this.soundService.CalculateNote(vmC.Value, this.itemsCount);
+            MidiNotes noteA = this.soundService.CalculateNote(vmA.Value, this.ItemsCount);
+            MidiNotes noteB = this.soundService.CalculateNote(vmB.Value, this.ItemsCount);
+            MidiNotes noteC = this.soundService.CalculateNote(vmC.Value, this.ItemsCount);
 
             await this.soundService.PlayNotesAsync(noteA, noteB, noteC, this.delay);
 
@@ -188,22 +224,5 @@
             (this.Items[indexA], this.Items[indexB]) = (this.Items[indexB], this.Items[indexA]);
             return this.UpdateBox(indexA, indexB);
         }
-
-        /// <summary>
-        /// Clears the status of all elements in the collection.
-        /// </summary>
-        public void ClearAllStatuses()
-        {
-            foreach (
-                SortableElementViewModel vm in this.Items.Where(
-                    item => item.Status != SortableElementStatus.Normal
-                )
-            )
-            {
-                vm.Status = SortableElementStatus.Normal;
-            }
-        }
-
-        public abstract override string ToString();
     }
 }

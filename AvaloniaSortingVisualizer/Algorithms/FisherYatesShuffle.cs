@@ -9,6 +9,10 @@
     /// </summary>
     public class FisherYatesShuffle : Shuffle
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FisherYatesShuffle"/> class.
+        /// </summary>
+        /// <param name="soundService">Service to play sounds to help wih visualization.</param>
         public FisherYatesShuffle(ISoundService soundService)
             : base(soundService)
         {
@@ -20,6 +24,7 @@
         /// </summary>
         private Random Rng { get; }
 
+        /// <inheritdoc/>
         public override async Task RunRange(int start, int end)
         {
             for (int i = start; i < end - 1; i++)
@@ -29,6 +34,7 @@
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString() => "Fisher-Yates Shuffle";
     }
 }

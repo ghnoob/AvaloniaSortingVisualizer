@@ -13,10 +13,15 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="SortingAlgorithm"/> class.
         /// </summary>
-        /// <param name="soundService"></param>
+        /// <param name="soundService">
+        /// Service to play sounds to complement the algorithm visualization.
+        /// </param>
         protected SortingAlgorithm(ISoundService soundService)
-            : base(soundService) { }
+            : base(soundService)
+        {
+        }
 
+        /// <inheritdoc/>
         public async override Task Run(CancellationToken cancellationToken)
         {
             await base.Run(cancellationToken);
@@ -29,7 +34,7 @@
         /// <returns>A task representing the final sweep operation.</returns>
         private async Task FinalSweep()
         {
-            for (int i = 0; i < this.itemsCount; i++)
+            for (int i = 0; i < this.ItemsCount; i++)
             {
                 await this.UpdateBox(i);
                 this.Items[i].Status = SortableElementStatus.Sorted;

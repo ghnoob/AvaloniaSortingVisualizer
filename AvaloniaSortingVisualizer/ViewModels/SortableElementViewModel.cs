@@ -37,14 +37,15 @@
                     value,
                     this.model,
                     (model, status) => model.Status = status,
-                    nameof(this.Status)
-                );
+                    nameof(this.Status));
         }
 
         /// <summary>
         /// Gets a color representing the current Status.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="SolidColorPaint"/> representing the current status.
+        /// </returns>
         public SolidColorPaint GetColor()
         {
             if (this.Status == SortableElementStatus.Normal)

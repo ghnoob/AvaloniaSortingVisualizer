@@ -18,6 +18,6 @@
         /// <summary>
         /// The element has been sorted.
         /// </summary>
-        Sorted
+        Sorted,
     }
 }

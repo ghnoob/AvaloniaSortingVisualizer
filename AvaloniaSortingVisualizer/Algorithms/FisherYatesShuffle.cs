@@ -1,32 +1,31 @@
-﻿using System.Threading.Tasks;
-using AvaloniaSortingVisualizer.Services;
-
-using System;
-
-namespace AvaloniaSortingVisualizer.Algorithms
+﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System;
+    using System.Threading.Tasks;
+    using AvaloniaSortingVisualizer.Services;
+
     /// <summary>
-    /// Implementation of the Fisher-Yates shuffle algorithm
+    /// Implementation of the Fisher-Yates shuffle algorithm.
     /// </summary>
     public class FisherYatesShuffle : Shuffle
     {
-        /// <summary>
-        /// Gets the random number generator (RNG)
-        /// </summary>
-        private Random rng { get; }
-
         public FisherYatesShuffle(ISoundService soundService)
             : base(soundService)
         {
-            rng = new Random();
+            this.Rng = new Random();
         }
+
+        /// <summary>
+        /// Gets the random number generator (RNG).
+        /// </summary>
+        private Random Rng { get; }
 
         public override async Task RunRange(int start, int end)
         {
             for (int i = start; i < end - 1; i++)
             {
-                int j = rng.Next(i, end);
-                await Swap(i, j);
+                int j = this.Rng.Next(i, end);
+                await this.Swap(i, j);
             }
         }
 

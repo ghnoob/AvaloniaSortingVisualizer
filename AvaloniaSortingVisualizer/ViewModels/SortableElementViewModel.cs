@@ -1,36 +1,15 @@
-﻿using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
-using AvaloniaSortingVisualizer.Models;
-
-namespace AvaloniaSortingVisualizer.ViewModels
+﻿namespace AvaloniaSortingVisualizer.ViewModels
 {
+    using AvaloniaSortingVisualizer.Models;
+    using LiveChartsCore.SkiaSharpView.Painting;
+    using SkiaSharp;
+
     /// <summary>
     /// View model for a sortable element.
     /// </summary>
     public class SortableElementViewModel : ViewModelBase
     {
-        private readonly SortableElementModel _model;
-
-        /// <summary>
-        /// Gets the value of the sortable element.
-        /// </summary>
-        public double Value => _model.Value;
-
-        /// <summary>
-        /// Gets or sets the status of the sortable element.
-        /// </summary>
-        public SortableElementStatus Status
-        {
-            get => _model.Status;
-            set =>
-                SetProperty(
-                    _model.Status,
-                    value,
-                    _model,
-                    (model, status) => model.Status = status,
-                    nameof(Status)
-                );
-        }
+        private readonly SortableElementModel model;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SortableElementViewModel"/> class.
@@ -38,18 +17,46 @@ namespace AvaloniaSortingVisualizer.ViewModels
         /// <param name="model">The underlying model of the sortable element.</param>
         public SortableElementViewModel(SortableElementModel model)
         {
-            _model = model;
+            this.model = model;
         }
 
         /// <summary>
-        /// Gets a color representing the current Status
+        /// Gets the value of the sortable element.
         /// </summary>
+        public double Value => this.model.Value;
+
+        /// <summary>
+        /// Gets or sets the status of the sortable element.
+        /// </summary>
+        public SortableElementStatus Status
+        {
+            get => this.model.Status;
+            set =>
+                this.SetProperty(
+                    this.model.Status,
+                    value,
+                    this.model,
+                    (model, status) => model.Status = status,
+                    nameof(this.Status)
+                );
+        }
+
+        /// <summary>
+        /// Gets a color representing the current Status.
+        /// </summary>
+        /// <returns></returns>
         public SolidColorPaint GetColor()
         {
-            if (Status == SortableElementStatus.Normal)
+            if (this.Status == SortableElementStatus.Normal)
+            {
                 return new SolidColorPaint(SKColors.White);
-            if (Status == SortableElementStatus.Tracked)
+            }
+
+            if (this.Status == SortableElementStatus.Tracked)
+            {
                 return new SolidColorPaint(SKColors.Red);
+            }
+
             return new SolidColorPaint(SKColors.Green);
         }
     }

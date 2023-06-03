@@ -1,9 +1,9 @@
-﻿using AvaloniaSortingVisualizer.Services;
-
-namespace AvaloniaSortingVisualizer.Algorithms
+﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using AvaloniaSortingVisualizer.Services;
+
     /// <summary>
-    /// Base class for all algorithms that involve shuffling
+    /// Base class for all algorithms that involve shuffling.
     /// </summary>
     public abstract class Shuffle : Algorithm
     {

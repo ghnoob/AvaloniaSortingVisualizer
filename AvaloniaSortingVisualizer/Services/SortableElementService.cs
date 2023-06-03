@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AvaloniaSortingVisualizer.Models;
-
-namespace AvaloniaSortingVisualizer.Services
+﻿namespace AvaloniaSortingVisualizer.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using AvaloniaSortingVisualizer.Models;
+
     /// <summary>
     /// Represents a service that provides sortable element data.
     /// </summary>

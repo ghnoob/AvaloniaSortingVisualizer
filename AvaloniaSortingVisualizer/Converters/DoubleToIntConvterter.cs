@@ -1,11 +1,10 @@
-﻿using System;
-using System.Globalization;
-using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Data.Converters;
-
-namespace AvaloniaSortingVisualizer.Converters
+﻿namespace AvaloniaSortingVisualizer.Converters
 {
+    using System;
+    using System.Globalization;
+    using Avalonia.Data;
+    using Avalonia.Data.Converters;
+
     /// <summary>
     /// Converts a <see cref="double"/> value to an <see cref="int"/>.
     /// </summary>
@@ -20,7 +19,9 @@ namespace AvaloniaSortingVisualizer.Converters
         )
         {
             if (value is double val && targetType.IsAssignableFrom(typeof(int)))
+            {
                 return (int)val;
+            }
 
             return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
         }
@@ -34,7 +35,9 @@ namespace AvaloniaSortingVisualizer.Converters
         )
         {
             if (value is int val && targetType.IsAssignableFrom(typeof(double)))
+            {
                 return (double)val;
+            }
 
             return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
         }

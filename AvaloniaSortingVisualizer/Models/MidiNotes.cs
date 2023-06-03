@@ -1,7 +1,7 @@
 ﻿namespace AvaloniaSortingVisualizer.Models
 {
     /// <summary>
-    /// Represent all the midi note codes (0 being the lowest and 127 the highest pitched)
+    /// Represent all the midi note codes (0 being the lowest and 127 the highest pitched).
     /// </summary>
     public enum MidiNotes
     {
@@ -132,6 +132,6 @@
         Note124 = 124,
         Note125 = 125,
         Note126 = 126,
-        Note127 = 127
+        Note127 = 127,
     }
 }

@@ -1,23 +1,26 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AvaloniaSortingVisualizer.Models;
-using AvaloniaSortingVisualizer.Services;
-using AvaloniaSortingVisualizer.ViewModels;
-
-namespace AvaloniaSortingVisualizer.Algorithms
+﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using AvaloniaSortingVisualizer.Models;
+    using AvaloniaSortingVisualizer.Services;
+
     /// <summary>
     /// Base class for sorting algorithms.
     /// </summary>
     public abstract class SortingAlgorithm : Algorithm
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SortingAlgorithm"/> class.
+        /// </summary>
+        /// <param name="soundService"></param>
         protected SortingAlgorithm(ISoundService soundService)
             : base(soundService) { }
 
         public async override Task Run(CancellationToken cancellationToken)
         {
             await base.Run(cancellationToken);
-            await FinalSweep();
+            await this.FinalSweep();
         }
 
         /// <summary>
@@ -26,13 +29,13 @@ namespace AvaloniaSortingVisualizer.Algorithms
         /// <returns>A task representing the final sweep operation.</returns>
         private async Task FinalSweep()
         {
-            for (int i = 0; i < itemsCount; i++)
+            for (int i = 0; i < this.itemsCount; i++)
             {
-                await UpdateBox(i);
-                Items[i].Status = SortableElementStatus.Sorted;
+                await this.UpdateBox(i);
+                this.Items[i].Status = SortableElementStatus.Sorted;
             }
 
-            ClearAllStatuses();
+            this.ClearAllStatuses();
         }
     }
 }

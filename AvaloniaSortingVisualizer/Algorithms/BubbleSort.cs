@@ -1,16 +1,18 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using AvaloniaSortingVisualizer.Models;
-using AvaloniaSortingVisualizer.Services;
-using AvaloniaSortingVisualizer.ViewModels;
-
-namespace AvaloniaSortingVisualizer.Algorithms
+﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Threading.Tasks;
+    using AvaloniaSortingVisualizer.Models;
+    using AvaloniaSortingVisualizer.Services;
+
     /// <summary>
-    /// Implementation of the bubble sort algorithm
+    /// Implementation of the bubble sort algorithm.
     /// </summary>
     public class BubbleSort : SortingAlgorithm
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BubbleSort"/> class.
+        /// </summary>
+        /// <param name="soundService"></param>
         public BubbleSort(ISoundService soundService)
             : base(soundService) { }
 
@@ -25,18 +27,18 @@ namespace AvaloniaSortingVisualizer.Algorithms
 
                 for (int j = start; j < end - i - 1; j++)
                 {
-                    if (Compare(Items[j], Items[j + 1]) > 0)
+                    if (this.Compare(this.Items[j], this.Items[j + 1]) > 0)
                     {
-                        await Swap(j, j + 1);
+                        await this.Swap(j, j + 1);
                         sorted = false;
                     }
                     else
                     {
-                        await UpdateBox(j);
+                        await this.UpdateBox(j);
                     }
                 }
 
-                Items[end - i - 1].Status = SortableElementStatus.Sorted;
+                this.Items[end - i - 1].Status = SortableElementStatus.Sorted;
                 i++;
             } while (!sorted);
         }

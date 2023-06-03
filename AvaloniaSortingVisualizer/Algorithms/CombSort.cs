@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using AvaloniaSortingVisualizer.Services;
-
-namespace AvaloniaSortingVisualizer.Algorithms
+﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Threading.Tasks;
+    using AvaloniaSortingVisualizer.Services;
+
     public class CombSort : BubbleSort
     {
         private const double ShrinkFactor = 1.3;
@@ -20,10 +20,14 @@ namespace AvaloniaSortingVisualizer.Algorithms
             {
                 for (int i = start + gap; i < end; i++)
                 {
-                    if (Compare(Items[i], Items[i - gap]) < 0)
-                        await Swap(i, i - gap);
+                    if (this.Compare(this.Items[i], this.Items[i - gap]) < 0)
+                    {
+                        await this.Swap(i, i - gap);
+                    }
                     else
-                        await UpdateBox(i);
+                    {
+                        await this.UpdateBox(i);
+                    }
                 }
             }
 

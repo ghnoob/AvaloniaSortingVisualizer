@@ -1,6 +1,6 @@
 using Avalonia.Controls;
-using Splat;
 using AvaloniaSortingVisualizer.ViewModels;
+using Splat;
 
 namespace AvaloniaSortingVisualizer.Views;
 
@@ -8,8 +8,8 @@ public partial class MainView : UserControl
 {
     public MainView()
     {
-        InitializeComponent();
+        this.InitializeComponent();
 
-        DataContext = Locator.Current.GetService<MainViewModel>();
+        this.DataContext = Locator.Current.GetService<MainViewModel>();
     }
 }

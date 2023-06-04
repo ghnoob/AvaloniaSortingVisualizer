@@ -55,6 +55,7 @@
             services.AddTransient<SortingAlgorithm, CocktailSort>();
             services.AddTransient<SortingAlgorithm, CombSort>();
             services.AddTransient<SortingAlgorithm, GnomeSort>();
+            services.AddTransient<SortingAlgorithm, SelectionSort>();
 
             services.AddTransient<Shuffle, FisherYatesShuffle>();
 

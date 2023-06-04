@@ -57,6 +57,7 @@
             services.AddTransient<SortingAlgorithm, GnomeSort>();
             services.AddTransient<SortingAlgorithm, InsertionSort>();
             services.AddTransient<SortingAlgorithm, SelectionSort>();
+            services.AddTransient<SortingAlgorithm, ShellSort>();
 
             services.AddTransient<Shuffle, FisherYatesShuffle>();
 

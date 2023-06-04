@@ -51,6 +51,7 @@
             services.AddSingleton<ISoundService, SoundService>();
 
             // Algorithms
+            services.AddTransient<SortingAlgorithm, BinaryInsertionSort>();
             services.AddTransient<SortingAlgorithm, BubbleSort>();
             services.AddTransient<SortingAlgorithm, CocktailSort>();
             services.AddTransient<SortingAlgorithm, CombSort>();

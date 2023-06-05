@@ -24,19 +24,20 @@
         {
             for (int i = start + 1; i < end; i++)
             {
-                SortableElementViewModel temp = this.Items[i];
+                double tempValue = this.Items[i].Value;
 
-                int target = await this.BinarySearch(temp, start, i);
-                this.Items[target].Status = SortableElementStatus.Tracked;
+                int target = await this.BinarySearch(this.Items[i], start, i);
+                SortableElementViewModel tmpTarget = this.Items[target];
+                tmpTarget.Status = SortableElementStatus.Tracked;
 
                 for (int j = i; j > target; j--)
                 {
-                    this.Items[j] = this.Items[j - 1];
+                    this.Items[j].Value = this.Items[j - 1].Value;
                     await this.UpdateBox(j);
                 }
 
-                this.Items[target].Status = SortableElementStatus.Normal;
-                this.Items[target] = temp;
+                tmpTarget.Status = SortableElementStatus.Normal;
+                this.Items[target].Value = tempValue;
                 await this.UpdateBox(target);
             }
         }

@@ -21,9 +21,19 @@
         }
 
         /// <summary>
-        /// Gets the value of the sortable element.
+        /// Gets or sets the value of the sortable element.
         /// </summary>
-        public double Value => this.model.Value;
+        public double Value
+        {
+            get => this.model.Value;
+            set =>
+                this.SetProperty(
+                    this.model.Value,
+                    value,
+                    this.model,
+                    (model, val) => model.Value = val,
+                    nameof(this.Value));
+        }
 
         /// <summary>
         /// Gets or sets the status of the sortable element.

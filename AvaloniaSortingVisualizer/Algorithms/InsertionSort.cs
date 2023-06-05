@@ -35,16 +35,16 @@
         {
             for (int i = start + gap; i < end; i++)
             {
-                SortableElementViewModel temp = this.Items[i];
+                double tempValue = this.Items[i].Value;
 
                 int j;
-                for (j = i; j >= start + gap && this.Compare(this.Items[j - gap], temp) > 0; j -= gap)
+                for (j = i; j >= start + gap && this.Items[j - gap].Value > tempValue; j -= gap)
                 {
-                    this.Items[j] = this.Items[j - gap];
+                    this.Items[j].Value = this.Items[j - gap].Value;
                     await this.UpdateBox(j);
                 }
 
-                this.Items[j] = temp;
+                this.Items[j].Value = tempValue;
                 await this.UpdateBox(j);
             }
         }

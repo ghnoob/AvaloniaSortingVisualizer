@@ -30,8 +30,8 @@
             int i = start;
             foreach (SortableElementViewModel vm in sorted)
             {
-                this.Items[i] = vm;
-                await this.UpdateBox(i);
+                int j = this.Items.IndexOf(vm);
+                await this.Swap(i, j);
                 i++;
             }
         }

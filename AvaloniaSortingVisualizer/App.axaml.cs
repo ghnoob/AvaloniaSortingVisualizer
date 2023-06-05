@@ -62,6 +62,7 @@
 
             services.AddTransient<Shuffle, FisherYatesShuffle>();
             services.AddTransient<Shuffle, SortedShuffle>();
+            services.AddTransient<Shuffle, ReversedShuffle>();
 
             // ViewModels
             services.AddTransient<MainViewModel>();

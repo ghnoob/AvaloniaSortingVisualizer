@@ -165,6 +165,8 @@
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB)
         {
+            this.cancellationToken.ThrowIfCancellationRequested();
+
             SortableElementViewModel vmA = this.Items[indexA];
             SortableElementStatus tmpStatusA = vmA.Status;
             SortableElementViewModel vmB = this.Items[indexB];
@@ -191,6 +193,8 @@
         /// <returns>A task representing the update and delay operation.</returns>
         protected async Task UpdateBox(int indexA, int indexB, int indexC)
         {
+            this.cancellationToken.ThrowIfCancellationRequested();
+
             SortableElementViewModel vmA = this.Items[indexA];
             SortableElementStatus tmpStatusA = vmA.Status;
             SortableElementViewModel vmB = this.Items[indexB];

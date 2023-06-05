@@ -39,20 +39,20 @@
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
         /// <param name="service">The sortable element service.</param>
-        /// <param name="algorithms">The collection of sorting algorithms.</param>
-        /// <param name="shuffler">The shuffling algorithms.</param>
+        /// <param name="sortingAlgorithms">The collection of sorting algorithms.</param>
+        /// <param name="shufflers">The shuffling algorithms.</param>
         public MainViewModel(
             ISortableElementService service,
-            IEnumerable<SortingAlgorithm> algorithms,
-            Shuffle shuffler)
+            IEnumerable<SortingAlgorithm> sortingAlgorithms,
+            IEnumerable<Shuffle> shufflers)
         {
             this.sortableElementService = service;
             this.items = this.GenerateObservableCollection(this.DefaultArrayLength);
             this.XAxes = new Axis[] { new Axis { IsVisible = false } };
             this.YAxes = new Axis[] { new Axis { IsVisible = false } };
             this.Series = this.ConfigureSeries();
-            this.SortingAlgorithms = algorithms.OrderBy(alg => alg.Name);
-            this.Shuffler = shuffler;
+            this.SortingAlgorithms = sortingAlgorithms.OrderBy(alg => alg.Name);
+            this.Shufflers = shufflers;
             this.IsRunning = false;
         }
 
@@ -65,9 +65,9 @@
         }
 
         /// <summary>
-        /// Gets the shuffle algorithm.
+        /// Gets the shuffle algorithms.
         /// </summary>
-        public Shuffle Shuffler { get; }
+        public IEnumerable<Shuffle> Shufflers { get; }
 
         /// <summary>
         /// Gets the ordered enumerable of sorting algorithms.

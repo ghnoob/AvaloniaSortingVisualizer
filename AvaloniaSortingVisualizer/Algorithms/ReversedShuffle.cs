@@ -10,7 +10,7 @@
     /// <summary>
     /// Sorts the items in ascending order.
     /// </summary>
-    public class ReversedShuffle : Shuffle
+    public class ReversedShuffle : OrderedShuffleBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReversedShuffle"/> class.
@@ -22,20 +22,14 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
+        public override Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
-            IOrderedEnumerable<SortableElementViewModel> sorted = items
+            IOrderedEnumerable<SortableElementViewModel> reversed = items
                 .Skip(start)
                 .Take(end - start + 1)
                 .OrderByDescending(x => x.Value);
 
-            int i = start;
-            foreach (SortableElementViewModel vm in sorted)
-            {
-                int j = items.IndexOf(vm);
-                await this.Swap(items, i, j, token);
-                i++;
-            }
+            return this.CopySequence(reversed, items, start, token);
         }
 
         /// <inheritdoc/>

@@ -127,12 +127,11 @@
             this.IsRunning = true;
             try
             {
-                algorithm.SetItems(this.items);
-                await algorithm.Run(token);
+                await algorithm.Run(this.items, token);
             }
             catch (OperationCanceledException)
             {
-                algorithm.ClearAllStatuses();
+                algorithm.ClearAllStatuses(this.items);
             }
             finally
             {

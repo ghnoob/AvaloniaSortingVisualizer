@@ -1,7 +1,10 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Shell Sort implementation.
@@ -23,11 +26,11 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
             foreach (int gap in ShellSort.Gaps)
             {
-                await this.GappedInsertionSort(start, end, gap);
+                await this.GappedInsertionSort(items, start, end, gap, token);
             }
         }
 

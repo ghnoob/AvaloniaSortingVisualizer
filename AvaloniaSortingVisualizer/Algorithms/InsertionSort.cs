@@ -1,5 +1,7 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Services;
     using AvaloniaSortingVisualizer.ViewModels;
@@ -19,7 +21,7 @@
         }
 
         /// <inheritdoc/>
-        public override Task RunRange(int start, int end) => this.GappedInsertionSort(start, end, 1);
+        public override Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token) => this.GappedInsertionSort(items, start, end, 1, token);
 
         /// <inheritdoc/>
         public override string ToString() => "Insertion Sort";
@@ -27,25 +29,27 @@
         /// <summary>
         /// Performs a gapped insertion sort in a range of items.
         /// </summary>
+        /// <param name="items">The list of items.</param>
         /// <param name="start">Start index of the sequence (inclusive).</param>
         /// <param name="end">End index of the sequence (exclusive).</param>
         /// <param name="gap">Lenght of the gap.</param>
+        /// <param name="token">Token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the operation.</returns>
-        protected async Task GappedInsertionSort(int start, int end, int gap = 1)
+        protected async Task GappedInsertionSort(IList<SortableElementViewModel> items, int start, int end, int gap, CancellationToken token)
         {
             for (int i = start + gap; i < end; i++)
             {
-                double tempValue = this.Items[i].Value;
+                double tempValue = items[i].Value;
 
                 int j;
-                for (j = i; j >= start + gap && this.Items[j - gap].Value > tempValue; j -= gap)
+                for (j = i; j >= start + gap && items[j - gap].Value > tempValue; j -= gap)
                 {
-                    this.Items[j].Value = this.Items[j - gap].Value;
-                    await this.UpdateBox(j);
+                    items[j].Value = items[j - gap].Value;
+                    await this.UpdateBox(items, j, token);
                 }
 
-                this.Items[j].Value = tempValue;
-                await this.UpdateBox(j);
+                items[j].Value = tempValue;
+                await this.UpdateBox(items, j, token);
             }
         }
     }

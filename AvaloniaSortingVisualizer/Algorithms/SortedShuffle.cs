@@ -1,6 +1,8 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Services;
     using AvaloniaSortingVisualizer.ViewModels;
@@ -20,9 +22,9 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
-            IOrderedEnumerable<SortableElementViewModel> sorted = this.Items
+            IOrderedEnumerable<SortableElementViewModel> sorted = items
                 .Skip(start)
                 .Take(end - start + 1)
                 .OrderBy(x => x.Value);
@@ -30,8 +32,8 @@
             int i = start;
             foreach (SortableElementViewModel vm in sorted)
             {
-                int j = this.Items.IndexOf(vm);
-                await this.Swap(i, j);
+                int j = items.IndexOf(vm);
+                await this.Swap(items, i, j, token);
                 i++;
             }
         }

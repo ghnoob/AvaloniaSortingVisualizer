@@ -1,7 +1,10 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Implementation of the Gnome Sort algorithm.
@@ -18,20 +21,20 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
             int i = start;
             while (i < end - 1)
             {
-                if (i >= start && this.Compare(this.Items[i], this.Items[i + 1]) > 0)
+                if (i >= start && this.Compare(items[i], items[i + 1]) > 0)
                 {
-                    await this.Swap(i, i + 1);
+                    await this.Swap(items, i, i + 1, token);
                     i--;
                 }
                 else
                 {
                     i++;
-                    await this.UpdateBox(i);
+                    await this.UpdateBox(items, i, token);
                 }
             }
         }

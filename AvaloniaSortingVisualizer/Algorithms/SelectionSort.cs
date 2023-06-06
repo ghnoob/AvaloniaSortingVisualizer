@@ -1,8 +1,11 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Models;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Selection sort implementation.
@@ -21,30 +24,30 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
             for (int i = start; i < end - 1; i++)
             {
                 int minIndex = i;
-                this.Items[minIndex].Status = SortableElementStatus.Tracked;
+                items[minIndex].Status = SortableElementStatus.Tracked;
                 for (int j = i + 1; j < end; j++)
                 {
-                    await this.UpdateBox(j);
-                    if (this.Compare(this.Items[j], this.Items[minIndex]) < 0)
+                    await this.UpdateBox(items, j, token);
+                    if (this.Compare(items[j], items[minIndex]) < 0)
                     {
-                        this.Items[minIndex].Status = SortableElementStatus.Normal;
-                        this.Items[j].Status = SortableElementStatus.Tracked;
+                        items[minIndex].Status = SortableElementStatus.Normal;
+                        items[j].Status = SortableElementStatus.Tracked;
                         minIndex = j;
                     }
                 }
 
-                this.Items[minIndex].Status = SortableElementStatus.Normal;
+                items[minIndex].Status = SortableElementStatus.Normal;
                 if (minIndex != i)
                 {
-                    await this.Swap(i, minIndex);
+                    await this.Swap(items, i, minIndex, token);
                 }
 
-                this.Items[i].Status = SortableElementStatus.Sorted;
+                items[i].Status = SortableElementStatus.Sorted;
             }
         }
 

@@ -1,7 +1,10 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Comb sort implementation.
@@ -22,27 +25,17 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
             for (
                 int gap = (int)((end - start) / ShrinkFactor);
                 gap > 1;
                 gap = (int)(gap / ShrinkFactor))
             {
-                for (int i = start + gap; i < end; i++)
-                {
-                    if (this.Compare(this.Items[i], this.Items[i - gap]) < 0)
-                    {
-                        await this.Swap(i, i - gap);
-                    }
-                    else
-                    {
-                        await this.UpdateBox(i);
-                    }
-                }
+                await this.BubbleFromLeftToRight(items, start, end, gap, token);
             }
 
-            await base.RunRange(start, end);
+            await base.RunRange(items, start, end, token);
         }
 
         /// <inheritdoc/>

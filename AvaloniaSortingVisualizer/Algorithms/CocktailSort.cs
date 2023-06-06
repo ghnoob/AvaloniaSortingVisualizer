@@ -1,8 +1,11 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Models;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Implementation of the Cocktail Sort algorithm.
@@ -19,7 +22,7 @@
         }
 
         /// <inheritdoc/>
-        public override async Task RunRange(int start, int end)
+        public override async Task RunRange(IList<SortableElementViewModel> items, int start, int end, CancellationToken token)
         {
             bool sorted = false;
             bool rightToLeft = false;
@@ -30,13 +33,13 @@
             {
                 if (rightToLeft)
                 {
-                    sorted = !(await this.BubbleFromRightToLeft(i, j));
+                    sorted = !(await this.BubbleFromRightToLeft(items, i, j, token));
                     j--;
                     i++;
                 }
                 else
                 {
-                    sorted = !(await this.BubbleFromLeftToRight(i, j));
+                    sorted = !(await this.BubbleFromLeftToRight(items, i, j, token));
                 }
 
                 rightToLeft = !rightToLeft;
@@ -50,31 +53,33 @@
         /// Performs the bubble sort algorithm by moving elements from right to left
         /// in the specified range.
         /// </summary>
+        /// <param name="items">The collection of items.</param>
         /// <param name="left">The starting index of the range (inclusive).</param>
         /// <param name="right">The ending index of the range (exclusive).</param>
+        /// <param name="token">Token to cancel the operation.</param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// The task result is a boolean value indicating whether any elements were changed
         /// during the sorting process.
         /// </returns>
-        private async Task<bool> BubbleFromRightToLeft(int left, int right)
+        private async Task<bool> BubbleFromRightToLeft(IList<SortableElementViewModel> items, int left, int right, CancellationToken token)
         {
             bool changed = false;
 
             for (int i = right - 1; i > left; i--)
             {
-                if (this.Compare(this.Items[i], this.Items[i - 1]) < 0)
+                if (this.Compare(items[i], items[i - 1]) < 0)
                 {
-                    await this.Swap(i, i - 1);
+                    await this.Swap(items, i, i - 1, token);
                     changed = true;
                 }
                 else
                 {
-                    await this.UpdateBox(i);
+                    await this.UpdateBox(items, i, token);
                 }
             }
 
-            this.Items[left].Status = SortableElementStatus.Sorted;
+            items[left].Status = SortableElementStatus.Sorted;
 
             return changed;
         }

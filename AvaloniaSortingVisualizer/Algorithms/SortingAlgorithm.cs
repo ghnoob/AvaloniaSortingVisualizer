@@ -1,9 +1,11 @@
 ﻿namespace AvaloniaSortingVisualizer.Algorithms
 {
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using AvaloniaSortingVisualizer.Models;
     using AvaloniaSortingVisualizer.Services;
+    using AvaloniaSortingVisualizer.ViewModels;
 
     /// <summary>
     /// Base class for sorting algorithms.
@@ -22,25 +24,29 @@
         }
 
         /// <inheritdoc/>
-        public async override Task Run(CancellationToken cancellationToken)
+        public async override Task Run(IList<SortableElementViewModel> items, CancellationToken token)
         {
-            await base.Run(cancellationToken);
-            await this.FinalSweep();
+            await base.Run(items, token);
+            await this.FinalSweep(items, token);
         }
 
         /// <summary>
         /// Performs a final sweep to visually mark all elements as sorted.
         /// </summary>
+        /// <param name="items">Items to mark.</param>
+        /// <param name="token">
+        /// A cancellation token that can be used to cancel the operation.
+        /// </param>
         /// <returns>A task representing the final sweep operation.</returns>
-        private async Task FinalSweep()
+        private async Task FinalSweep(IList<SortableElementViewModel> items, CancellationToken token)
         {
-            for (int i = 0; i < this.ItemsCount; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                await this.UpdateBox(i);
-                this.Items[i].Status = SortableElementStatus.Sorted;
+                await this.UpdateBox(items, i, token);
+                items[i].Status = SortableElementStatus.Sorted;
             }
 
-            this.ClearAllStatuses();
+            this.ClearAllStatuses(items);
         }
     }
 }

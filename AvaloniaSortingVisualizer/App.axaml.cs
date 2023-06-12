@@ -56,6 +56,7 @@
             services.AddTransient<SortingAlgorithm, CocktailSort>();
             services.AddTransient<SortingAlgorithm, CombSort>();
             services.AddTransient<SortingAlgorithm, GnomeSort>();
+            services.AddTransient<SortingAlgorithm, HeapSort>();
             services.AddTransient<SortingAlgorithm, InsertionSort>();
             services.AddTransient<SortingAlgorithm, SelectionSort>();
             services.AddTransient<SortingAlgorithm, ShellSort>();

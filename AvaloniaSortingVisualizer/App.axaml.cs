@@ -48,6 +48,7 @@
 
             // Services
             services.AddSingleton<ISortableElementService, LinearDistributionService>();
+            services.AddSingleton<ISortableElementService, EqualDistributionService>();
             services.AddSingleton<ISoundService, SoundService>();
 
             // Algorithms

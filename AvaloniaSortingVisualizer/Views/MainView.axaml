@@ -5,6 +5,7 @@
              xmlns:vm="using:AvaloniaSortingVisualizer.ViewModels"
              xmlns:algorithm="using:AvaloniaSortingVisualizer.Algorithms"
              xmlns:converter="using:AvaloniaSortingVisualizer.Converters"
+             xmlns:service="using:AvaloniaSortingVisualizer.Services"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaSortingVisualizer.Views.MainView"
@@ -22,7 +23,7 @@
                         TooltipPosition="Hidden"
                         EasingFunction="{x:Null}"/>
 
-    <Grid Background="LightGray" ColumnDefinitions="* * Auto 2*" Grid.Row="1">
+    <Grid Background="LightGray" ColumnDefinitions="* * Auto 2.5*" Grid.Row="1">
       <Grid ColumnDefinitions="* Auto" Grid.Column="0">
         <ComboBox
           Items="{Binding SortingAlgorithms}"
@@ -70,14 +71,32 @@
               Grid.Column="2">
         Stop
       </Button>
-      <Grid Margin="5" ColumnDefinitions="Auto * Auto" Grid.Column="3">
+      <Grid Margin="5" ColumnDefinitions="Auto * Auto * Auto" Grid.Column="3">
           <TextBlock Grid.Column="0"
                      Padding="0"
                      Margin="5 0"
                      VerticalAlignment="Center">
-            Array length
+          Distribution
           </TextBlock>
-          <Slider Grid.Column="1"
+          <ComboBox
+            Items="{Binding Distributions}"
+            SelectedItem="{Binding SelectedDistribution}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            Grid.Column="1">
+            <ComboBox.ItemTemplate>
+              <DataTemplate DataType="service:ISortableElementService">
+                <TextBlock Text="{Binding Name}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <TextBlock Grid.Column="2"
+                     Padding="0"
+                     Margin="5 0"
+                     VerticalAlignment="Center">
+            Length
+          </TextBlock>
+          <Slider Grid.Column="3"
                   Value="{Binding DefaultArrayLength, Mode=OneTime}"
                   Minimum="8"
                   Maximum="1024"
@@ -96,7 +115,7 @@
           </Slider>
           <Button Command="{Binding ChangeArrayLengthCommand}"
                   CommandParameter="{Binding #ArrayLengthSelector.Value, Converter={StaticResource DoubleToIntConverter} Mode=OneWay}"
-                  Grid.Column="2"
+                  Grid.Column="4"
           >Generate</Button>
       </Grid>
     </Grid>

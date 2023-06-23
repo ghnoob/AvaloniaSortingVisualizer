@@ -47,7 +47,7 @@
             Locator.CurrentMutable.InitializeSplat();
 
             // Services
-            services.AddSingleton<ISortableElementService, SortableElementService>();
+            services.AddSingleton<ISortableElementService, LinearDistributionService>();
             services.AddSingleton<ISoundService, SoundService>();
 
             // Algorithms

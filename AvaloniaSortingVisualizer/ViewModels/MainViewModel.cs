@@ -21,8 +21,6 @@
     /// </summary>
     public partial class MainViewModel : ViewModelBase
     {
-        private ISortableElementService sortableElementService;
-
         /// <summary>
         /// Gets or sets the collection of sortable element view models.
         /// </summary>
@@ -38,15 +36,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
-        /// <param name="service">The sortable element service.</param>
+        /// <param name="distributions">The sortable element distributions.</param>
         /// <param name="sortingAlgorithms">The collection of sorting algorithms.</param>
         /// <param name="shufflers">The shuffling algorithms.</param>
         public MainViewModel(
-            ISortableElementService service,
+            IEnumerable<ISortableElementService> distributions,
             IEnumerable<SortingAlgorithm> sortingAlgorithms,
             IEnumerable<Shuffle> shufflers)
         {
-            this.sortableElementService = service;
+            this.Distributions = distributions;
+            this.SelectedDistribution = distributions.First();
             this.items = this.GenerateObservableCollection(this.DefaultArrayLength);
             this.XAxes = new Axis[] { new Axis { IsVisible = false } };
             this.YAxes = new Axis[] { new Axis { IsVisible = false } };
@@ -65,14 +64,24 @@
         }
 
         /// <summary>
+        /// Gets the Sortable element distributions.
+        /// </summary>
+        public IEnumerable<ISortableElementService> Distributions { get; }
+
+        /// <summary>
+        /// Gets or sets the current sortable element distribution.
+        /// </summary>
+        public ISortableElementService SelectedDistribution { get; set; }
+
+        /// <summary>
         /// Gets the shuffle algorithms.
         /// </summary>
         public IEnumerable<Shuffle> Shufflers { get; }
 
         /// <summary>
-        /// Gets the ordered enumerable of sorting algorithms.
+        /// Gets the sorting algorithms.
         /// </summary>
-        public IOrderedEnumerable<SortingAlgorithm> SortingAlgorithms { get; }
+        public IEnumerable<SortingAlgorithm> SortingAlgorithms { get; }
 
         /// <summary>
         /// Gets the x axes.
@@ -147,7 +156,7 @@
         private ObservableCollection<SortableElementViewModel> GenerateObservableCollection(
             int length)
         {
-            IEnumerable<SortableElementViewModel> items = this.sortableElementService
+            IEnumerable<SortableElementViewModel> items = this.SelectedDistribution
                 .GenerateItems(length)
                 .Select(model => new SortableElementViewModel(model));
 

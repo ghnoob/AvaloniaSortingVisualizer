@@ -61,6 +61,7 @@
             services.AddTransient<SortingAlgorithm, GnomeSort>();
             services.AddTransient<SortingAlgorithm, HeapSort>();
             services.AddTransient<SortingAlgorithm, InsertionSort>();
+            services.AddTransient<SortingAlgorithm, QuickSortLomuto>();
             services.AddTransient<SortingAlgorithm, QuickSortHoare>();
             services.AddTransient<SortingAlgorithm, SelectionSort>();
             services.AddTransient<SortingAlgorithm, ShellSort>();

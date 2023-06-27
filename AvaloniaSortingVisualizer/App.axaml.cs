@@ -66,6 +66,7 @@
             services.AddTransient<SortingAlgorithm, HeapSort>();
             services.AddTransient<SortingAlgorithm, InsertionSort>();
             services.AddTransient<SortingAlgorithm, IntroSort>();
+            services.AddTransient<SortingAlgorithm, MergeSort>();
             services.AddTransient<SortingAlgorithm, QuickSortLomuto>();
             services.AddTransient<SortingAlgorithm, QuickSortHoare>();
             services.AddTransient<SortingAlgorithm, SelectionSort>();

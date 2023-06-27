@@ -27,29 +27,15 @@
         /// <inheritdoc/>
         public override string ToString() => "Quick Sort (Hoare's partition)";
 
-        private async Task<SortableElementViewModel> MedianOfThree(IList<SortableElementViewModel> items, int lo, int hi, CancellationToken token)
-        {
-            int mid = (lo + hi) / 2;
-
-            if (this.Compare(items[lo], items[mid]) > 0)
-            {
-                await this.Swap(items, lo, mid, token);
-            }
-
-            if (this.Compare(items[lo], items[hi]) > 0)
-            {
-                await this.Swap(items, lo, hi, token);
-            }
-
-            if (this.Compare(items[mid], items[hi]) > 0)
-            {
-                await this.Swap(items, mid, hi, token);
-            }
-
-            return items[mid];
-        }
-
-        private async Task<int> Partition(IList<SortableElementViewModel> items, int lo, int hi, CancellationToken token)
+        /// <summary>
+        /// Partitions the given list of sortable elements within the specified range using the quicksort algorithm.
+        /// </summary>
+        /// <param name="items">The list of sortable elements to partition.</param>
+        /// <param name="lo">The starting index of the range to partition.</param>
+        /// <param name="hi">The ending index of the range to partition.</param>
+        /// <param name="token">A cancellation token to allow the operation to be canceled.</param>
+        /// <returns>The index of the pivot element after partitioning.</returns>
+        public async Task<int> Partition(IList<SortableElementViewModel> items, int lo, int hi, CancellationToken token)
         {
             SortableElementViewModel pivot = await this.MedianOfThree(items, lo, hi, token);
             pivot.Status = SortableElementStatus.Tracked;
@@ -85,6 +71,28 @@
 
                 await this.Swap(items, i, j, token);
             }
+        }
+
+        private async Task<SortableElementViewModel> MedianOfThree(IList<SortableElementViewModel> items, int lo, int hi, CancellationToken token)
+        {
+            int mid = (lo + hi) / 2;
+
+            if (this.Compare(items[lo], items[mid]) > 0)
+            {
+                await this.Swap(items, lo, mid, token);
+            }
+
+            if (this.Compare(items[lo], items[hi]) > 0)
+            {
+                await this.Swap(items, lo, hi, token);
+            }
+
+            if (this.Compare(items[mid], items[hi]) > 0)
+            {
+                await this.Swap(items, mid, hi, token);
+            }
+
+            return items[mid];
         }
 
         private async Task QuickSort(IList<SortableElementViewModel> items, int lo, int hi, CancellationToken token)

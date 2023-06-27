@@ -54,6 +54,10 @@
             services.AddSingleton<ISoundService, SoundService>();
 
             // Algorithms
+            services.AddTransient<InsertionSort>();
+            services.AddTransient<HeapSort>();
+            services.AddTransient<QuickSortHoare>();
+
             services.AddTransient<SortingAlgorithm, BinaryInsertionSort>();
             services.AddTransient<SortingAlgorithm, BubbleSort>();
             services.AddTransient<SortingAlgorithm, CocktailSort>();
@@ -61,6 +65,7 @@
             services.AddTransient<SortingAlgorithm, GnomeSort>();
             services.AddTransient<SortingAlgorithm, HeapSort>();
             services.AddTransient<SortingAlgorithm, InsertionSort>();
+            services.AddTransient<SortingAlgorithm, IntroSort>();
             services.AddTransient<SortingAlgorithm, QuickSortLomuto>();
             services.AddTransient<SortingAlgorithm, QuickSortHoare>();
             services.AddTransient<SortingAlgorithm, SelectionSort>();

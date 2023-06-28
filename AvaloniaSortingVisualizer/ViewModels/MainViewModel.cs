@@ -48,7 +48,7 @@
             this.SelectedDistribution = distributions.First();
             this.items = this.GenerateObservableCollection(this.DefaultArrayLength);
             this.XAxes = new Axis[] { new Axis { IsVisible = false } };
-            this.YAxes = new Axis[] { new Axis { IsVisible = false } };
+            this.YAxes = new Axis[] { new Axis { IsVisible = false, MinLimit = 0 } };
             this.Series = this.ConfigureSeries();
             this.SortingAlgorithms = sortingAlgorithms.OrderBy(alg => alg.Name);
             this.Shufflers = shufflers;
@@ -170,6 +170,7 @@
         {
             this.items = this.GenerateObservableCollection(length);
             this.Series[0].Values = this.items;
+            this.YAxes[0].MaxLimit = length;
         }
     }
 }

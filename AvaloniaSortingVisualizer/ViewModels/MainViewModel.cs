@@ -111,6 +111,7 @@
                     MaxBarWidth = double.PositiveInfinity,
                     Padding = 0,
                     Fill = new SolidColorPaint(SKColors.White),
+                    IsHoverable = false,
                     Mapping = (vm, point) =>
                     {
                         point.PrimaryValue = vm.Value;

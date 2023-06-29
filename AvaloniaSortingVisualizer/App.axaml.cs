@@ -60,6 +60,7 @@
 
             services.AddTransient<SortingAlgorithm, BinaryInsertionSort>();
             services.AddTransient<SortingAlgorithm, BubbleSort>();
+            services.AddTransient<SortingAlgorithm, BottomUpMergeSort>();
             services.AddTransient<SortingAlgorithm, CocktailSort>();
             services.AddTransient<SortingAlgorithm, CombSort>();
             services.AddTransient<SortingAlgorithm, GnomeSort>();

@@ -50,6 +50,7 @@
             services.AddSingleton<ISortableElementService, LinearDistributionService>();
             services.AddSingleton<ISortableElementService, EqualDistributionService>();
             services.AddSingleton<ISortableElementService, AlmostEqualDistributionService>();
+            services.AddSingleton<ISortableElementService, RandomDistributionService>();
             services.AddSingleton<ISortableElementService, SineWaveDistributionService>();
             services.AddSingleton<ISoundService, SoundService>();
 
